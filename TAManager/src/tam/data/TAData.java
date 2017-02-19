@@ -234,6 +234,17 @@ public class TAData implements AppDataComponent {
         // SORT THE TAS
         Collections.sort(teachingAssistants);
     }
+    public void addTA(String initName, String initEmail) {
+        // MAKE THE TA along with email
+        TeachingAssistant ta = new TeachingAssistant(initName, initEmail);
+
+        // ADD THE TA along with email
+        if (!containsTA(initName)) {
+            teachingAssistants.add(ta);
+        }
+        // SORT THE TAS
+        Collections.sort(teachingAssistants);
+    }
 
     public void addOfficeHoursReservation(String day, String time, String taName) {
         String cellKey = getCellKey(day, time);
