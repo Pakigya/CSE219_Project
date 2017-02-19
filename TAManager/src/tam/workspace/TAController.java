@@ -41,7 +41,9 @@ public class TAController {
         // WE'LL NEED THE WORKSPACE TO RETRIEVE THE USER INPUT VALUES
         TAWorkspace workspace = (TAWorkspace)app.getWorkspaceComponent();
         TextField nameTextField = workspace.getNameTextField();
+        TextField emailTextField = workspace.getEmailTextField();
         String name = nameTextField.getText();
+        String email = emailTextField.getText();
         
         // WE'LL NEED TO ASK THE DATA SOME QUESTIONS TOO
         TAData data = (TAData)app.getDataComponent();
@@ -54,18 +56,24 @@ public class TAController {
 	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
 	    dialog.show(props.getProperty(MISSING_TA_NAME_TITLE), props.getProperty(MISSING_TA_NAME_MESSAGE));            
         }
+        else if (email.isEmpty()) {
+	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_TA_EMAIL_TITLE), props.getProperty(MISSING_TA_EMAIL_MESSAGE));            
+        }
         // DOES A TA ALREADY HAVE THE SAME NAME OR EMAIL?
-        else if (data.containsTA(name)) {
+        else if (data.containsTA(name, email)) {
 	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
 	    dialog.show(props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE), props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE));                                    
         }
         // EVERYTHING IS FINE, ADD A NEW TA
         else {
             // ADD THE NEW TA TO THE DATA
-            data.addTA(name);
+            data.addTA(name, email);
+            //data.addTA(name);
             
             // CLEAR THE TEXT FIELDS
             nameTextField.setText("");
+            emailTextField.setText("");
             
             // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
             nameTextField.requestFocus();

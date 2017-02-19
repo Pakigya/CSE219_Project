@@ -215,12 +215,30 @@ public class TAData implements AppDataComponent {
 
     public boolean containsTA(String testName) {
         for (TeachingAssistant ta : teachingAssistants) {
-            if (ta.getName().equals(testName)) {
+            if (ta.getName().toLowerCase().equals(testName.toLowerCase()) ) {
                 return true;
             }
         }
         return false;
-    }
+    }    
+    
+    public boolean containsTA(String testName, String testEmail) {
+        for (TeachingAssistant ta : teachingAssistants) {
+            if (ta.getName().toLowerCase().equals(testName.toLowerCase()) || ta.getEmail().toLowerCase().equals(testEmail.toLowerCase()) ) {
+                return true;
+            }
+        }
+        return false;
+    }    
+    
+    /*public boolean containsTAEmail(String testEmail) {
+        for (TeachingAssistant ta : teachingAssistants) {
+            if (ta.getEmail().equals(testEmail)) {
+                return true;
+            }
+        }
+        return false;
+    }*/
 
     public void addTA(String initName) {
         // MAKE THE TA

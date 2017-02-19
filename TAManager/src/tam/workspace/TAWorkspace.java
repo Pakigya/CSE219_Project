@@ -54,6 +54,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
     // THE TA INPUT
     HBox addBox;
     TextField nameTextField;
+    TextField emailTextField;
     Button addButton;
 
     // THE HEADER ON THE RIGHT
@@ -100,19 +101,32 @@ public class TAWorkspace extends AppWorkspaceComponent {
         nameColumn = new TableColumn(nameColumnText);
         nameColumn.setCellValueFactory(
                 new PropertyValueFactory<TeachingAssistant, String>("name")
-        );
+        ); 
+        
         taTable.getColumns().add(nameColumn);
+        
+        TableColumn emailColumn = new TableColumn(emailColumnText);
+        emailColumn.setCellValueFactory(
+                new PropertyValueFactory<TeachingAssistant, String>("email")
+        );
+        emailColumn.prefWidthProperty().bind(taTable.widthProperty().multiply(0.4)); // changing the width of email Tab
+        taTable.getColumns().add(emailColumn);
 
         // ADD BOX FOR ADDING A TA
         String namePromptText = props.getProperty(TAManagerProp.NAME_PROMPT_TEXT.toString());
+        String emailPromptText = props.getProperty(TAManagerProp.EMAIL_PROMPT_TEXT.toString());
         String addButtonText = props.getProperty(TAManagerProp.ADD_BUTTON_TEXT.toString());
         nameTextField = new TextField();
+        emailTextField = new TextField();
         nameTextField.setPromptText(namePromptText);
+        emailTextField.setPromptText(emailPromptText);
         addButton = new Button(addButtonText);
         addBox = new HBox();
         nameTextField.prefWidthProperty().bind(addBox.widthProperty().multiply(.4));
+        emailTextField.prefWidthProperty().bind(addBox.widthProperty().multiply(.3));
         addButton.prefWidthProperty().bind(addBox.widthProperty().multiply(.2));
         addBox.getChildren().add(nameTextField);
+        addBox.getChildren().add(emailTextField);
         addBox.getChildren().add(addButton);
 
         // INIT THE HEADER ON THE RIGHT
@@ -158,6 +172,9 @@ public class TAWorkspace extends AppWorkspaceComponent {
         nameTextField.setOnAction(e -> {
             controller.handleAddTA();
         });
+        emailTextField.setOnAction(e -> {
+            controller.handleAddTA();
+        });
         addButton.setOnAction(e -> {
             controller.handleAddTA();
         });
@@ -186,6 +203,10 @@ public class TAWorkspace extends AppWorkspaceComponent {
 
     public TextField getNameTextField() {
         return nameTextField;
+    }
+    
+    public TextField getEmailTextField() {
+        return emailTextField;
     }
 
     public Button getAddButton() {
