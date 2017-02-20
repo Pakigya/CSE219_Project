@@ -80,6 +80,7 @@ public class TAStyle extends AppStyleComponent {
         taTable.getStyleClass().add(CLASS_TA_TABLE);
         for (TableColumn tableColumn : taTable.getColumns()) {
             tableColumn.getStyleClass().add(CLASS_TA_TABLE_COLUMN_HEADER);
+            //tableColumn.getStyleClass().add(CLASS_TA_TABLE_COLUMN_HEADER);
         }
 
         // LEFT SIDE - THE TA DATA ENTRY
