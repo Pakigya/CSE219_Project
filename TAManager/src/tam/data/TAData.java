@@ -277,7 +277,31 @@ public class TAData implements AppDataComponent {
     public void toggleTAOfficeHours(String cellKey, String taName) {
         StringProperty cellProp = officeHours.get(cellKey);
         String cellText = cellProp.getValue();
-        cellProp.setValue(cellText + "\n" + taName);
+        if (isThereTAInCell(cellProp, taName) == true)
+        {
+            removeTAFromCell(cellProp, taName);
+        }
+        else
+        {
+            cellProp.setValue(cellText + "\n" + taName);
+        }
+    }
+    
+    /**
+     * This method checks whether the TA exists in the name office
+     * grid cell already
+     */
+    public boolean isThereTAInCell(StringProperty cellProp, String taName){
+         // GET THE CELL TEXT
+        String cellText = cellProp.getValue();
+        if (cellText.contains(taName))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     
     /**
@@ -300,7 +324,9 @@ public class TAData implements AppDataComponent {
         // IT MUST BE ANOTHER TA IN THE CELL
         else {
             int startIndex = cellText.indexOf("\n" + taName);
-            cellText = cellText.substring(0, startIndex);
+            String initial = cellText.substring(0, startIndex); // Saves the data before the index of TA
+            String remaining = cellText.substring(startIndex+taName.length()+1); //Save the data after the fullname of the TA
+            cellText = initial + remaining; //Removes the TA
             cellProp.setValue(cellText);
         }
     }
