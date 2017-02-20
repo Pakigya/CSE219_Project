@@ -102,17 +102,18 @@ public class TAFiles implements AppFileComponent {
 	// GET THE DATA
 	TAData dataManager = (TAData)data;
 
-	// NOW BUILD THE TA JSON OBJCTS TO SAVE
+	// NOW BUILD THE TA JSON OBJECTS TO SAVE
 	JsonArrayBuilder taArrayBuilder = Json.createArrayBuilder();
 	ObservableList<TeachingAssistant> tas = dataManager.getTeachingAssistants();
 	for (TeachingAssistant ta : tas) {	    
 	    JsonObject taJson = Json.createObjectBuilder()
-		    .add(JSON_NAME, ta.getName()).build();
+		    .add(JSON_NAME, ta.getName())
+		    .add(JSON_EMAIL, ta.getEmail()).build();
 	    taArrayBuilder.add(taJson);
 	}
 	JsonArray undergradTAsArray = taArrayBuilder.build();
 
-	// NOW BUILD THE TIME SLOT JSON OBJCTS TO SAVE
+	// NOW BUILD THE TIME SLOT JSON OBJECTS TO SAVE
 	JsonArrayBuilder timeSlotArrayBuilder = Json.createArrayBuilder();
 	ArrayList<TimeSlot> officeHours = TimeSlot.buildOfficeHoursList(dataManager);
 	for (TimeSlot ts : officeHours) {	    
@@ -142,11 +143,11 @@ public class TAFiles implements AppFileComponent {
 	jsonWriter.close();
 
 	// INIT THE WRITER
-	OutputStream os = new FileOutputStream(filePath);
+	OutputStream os = new FileOutputStream(filePath + ".json");
 	JsonWriter jsonFileWriter = Json.createWriter(os);
 	jsonFileWriter.writeObject(dataManagerJSO);
 	String prettyPrinted = sw.toString();
-	PrintWriter pw = new PrintWriter(filePath);
+	PrintWriter pw = new PrintWriter(filePath+ ".json");
 	pw.write(prettyPrinted);
 	pw.close();
     }

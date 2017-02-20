@@ -77,6 +77,7 @@ public class TAController {
             // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
             nameTextField.requestFocus();
         }
+        updateToolBar(true);
     }
     
     /**
@@ -102,6 +103,7 @@ public class TAController {
         String taName = ta.getName();
         String taEmail = ta.getEmail();
         data.deleteTA(taName, taEmail);
+        updateToolBar(true);
     }
     
     /**
@@ -126,5 +128,11 @@ public class TAController {
         
         // AND TOGGLE THE OFFICE HOURS IN THE CLICKED CELL
         data.toggleTAOfficeHours(cellKey, taName);
+        updateToolBar(true);
+    }
+    
+    void updateToolBar(boolean IsChangeMade)
+    {
+         app.getGUI().updateToolbarControls(!IsChangeMade);
     }
 }
