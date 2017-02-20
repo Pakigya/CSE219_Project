@@ -9,7 +9,6 @@ import properties_manager.PropertiesManager;
 import tam.TAManagerApp;
 import tam.data.TAData;
 import tam.data.TeachingAssistant;
-import tam.workspace.TAWorkspace;
 
 /**
  * This class provides responses to all workspace interactions, meaning
@@ -79,7 +78,32 @@ public class TAController {
             nameTextField.requestFocus();
         }
     }
-
+    
+    /**
+     * This method responds to when the user deletes 
+     * a TA via the UI. 
+     */
+    public void handleDeleteTA(){
+        // GET THE TABLE
+        TAWorkspace workspace = (TAWorkspace)app.getWorkspaceComponent();
+        TableView taTable = workspace.getTATable();
+        
+        // WE'LL NEED TO ASK THE DATA SOME QUESTIONS TOO
+        TAData data = (TAData)app.getDataComponent();
+        
+        // WE'LL NEED THIS IN CASE WE NEED TO DISPLAY ANY ERROR MESSAGES
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        // GET THE SELECTED TA NAME
+        Object selectedItem = taTable.getSelectionModel().getSelectedItem();
+        
+        // GET THE TA
+        TeachingAssistant ta = (TeachingAssistant)selectedItem;
+        String taName = ta.getName();
+        String taEmail = ta.getEmail();
+        data.deleteTA(taName, taEmail);
+    }
+    
     /**
      * This function provides a response for when the user clicks
      * on the office hours grid to add or remove a TA to a time slot.

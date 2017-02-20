@@ -16,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -50,7 +51,8 @@ public class TAWorkspace extends AppWorkspaceComponent {
     // FOR THE TA TABLE
     TableView<TeachingAssistant> taTable;
     TableColumn<TeachingAssistant, String> nameColumn;
-
+    TableColumn<TeachingAssistant, String> emailColumn;
+    
     // THE TA INPUT
     HBox addBox;
     TextField nameTextField;
@@ -105,7 +107,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
         
         taTable.getColumns().add(nameColumn);
         
-        TableColumn emailColumn = new TableColumn(emailColumnText);
+        emailColumn = new TableColumn(emailColumnText);
         emailColumn.setCellValueFactory(
                 new PropertyValueFactory<TeachingAssistant, String>("email")
         );
@@ -178,8 +180,16 @@ public class TAWorkspace extends AppWorkspaceComponent {
         addButton.setOnAction(e -> {
             controller.handleAddTA();
         });
+       
+       taTable.setOnKeyPressed(e -> {
+           if (e.getCode() == KeyCode.DELETE )
+           {
+               controller.handleDeleteTA();
+               
+           }  
+       });
+       
     }
-    
     
     // WE'LL PROVIDE AN ACCESSOR METHOD FOR EACH VISIBLE COMPONENT
     // IN CASE A CONTROLLER OR STYLE CLASS NEEDS TO CHANGE IT
@@ -331,6 +341,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
         }
         
         // THEN THE TIME AND TA CELLS
+        // FILLS 4 CELLS AT A GIVEN TIME
         int row = 1;
         for (int i = dataComponent.getStartHour(); i < dataComponent.getEndHour(); i++) {
             // START TIME COLUMN

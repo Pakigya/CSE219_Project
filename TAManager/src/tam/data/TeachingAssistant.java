@@ -52,6 +52,18 @@ public class TeachingAssistant<E extends Comparable<E>> implements Comparable<E>
         return getName().compareTo(((TeachingAssistant)otherTA).getName());
     }
     
+    /**
+     * EQUALS TO CHECK WHETHER A GIVEN TA IS EQUAL TO ANOTHER TA OR NOT
+     * @param o
+     * @return 
+     */
+    public boolean equals(Object o){
+    	if (this == o) return true;
+    	if (!(o instanceof TeachingAssistant)) return false;
+		TeachingAssistant otherTA  = (TeachingAssistant) o;
+        return (otherTA.getName().equals(this.getName()));    	
+    }
+    
     @Override
     public String toString() {
         return name.getValue();

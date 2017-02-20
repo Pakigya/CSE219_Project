@@ -213,6 +213,15 @@ public class TAData implements AppDataComponent {
         }
     }
 
+    public boolean containsTA(TeachingAssistant testTA) {
+        for (TeachingAssistant ta : teachingAssistants) {
+            if (ta.equals(testTA) ) {
+                return true;
+            }
+        }
+        return false;
+    }    
+    
     public boolean containsTA(String testName) {
         for (TeachingAssistant ta : teachingAssistants) {
             if (ta.getName().toLowerCase().equals(testName.toLowerCase()) ) {
@@ -231,14 +240,14 @@ public class TAData implements AppDataComponent {
         return false;
     }    
     
-    /*public boolean containsTAEmail(String testEmail) {
+    public boolean containsTAEmail(String testEmail) {
         for (TeachingAssistant ta : teachingAssistants) {
             if (ta.getEmail().equals(testEmail)) {
                 return true;
             }
         }
         return false;
-    }*/
+    }
 
     public void addTA(String initName) {
         // MAKE THE TA
@@ -263,6 +272,18 @@ public class TAData implements AppDataComponent {
         // SORT THE TAS
         Collections.sort(teachingAssistants);
     }
+    public void deleteTA(String initName, String initEmail) {
+        // Delete THE TA along with email
+        TeachingAssistant ta = new TeachingAssistant(initName.trim(), initEmail.trim());
+        
+        if (containsTA(ta)) {
+            teachingAssistants.remove(ta);
+        }
+        removeFromEverywhere(initName);
+        // SORT THE TAS
+        Collections.sort(teachingAssistants);
+            System.out.println(teachingAssistants);
+    }
 
     public void addOfficeHoursReservation(String day, String time, String taName) {
         String cellKey = getCellKey(day, time);
@@ -284,6 +305,29 @@ public class TAData implements AppDataComponent {
         else
         {
             cellProp.setValue(cellText + "\n" + taName);
+        }
+    }
+    
+    /**
+     * This method removes all instances of TA
+     * from the Grid Cell
+     * @param taName 
+     */
+    public void removeFromEverywhere(String taName)
+    {
+        // COLUMNS from 2 to 6 // ROWS from 1 to 22
+        int row =1; int col = 2;
+        for (row=1; row<=22;row++ )
+        {
+            for (col=2;col<=6;col++)
+            {
+                String cellKey = col + "_" + row;
+                StringProperty cellProp = officeHours.get(cellKey);
+                if (isThereTAInCell(cellProp, taName) == true)
+                {
+                    removeTAFromCell(cellProp, taName);
+                }
+            }
         }
     }
     
