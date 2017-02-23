@@ -2,6 +2,7 @@ package djf;
 
 import djf.ui.*;
 import djf.components.*;
+import djf.controller.AppFileController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import properties_manager.PropertiesManager;
@@ -41,6 +42,8 @@ public abstract class AppTemplate extends Application {
         
     // THIS METHOD MUST BE OVERRIDDEN WHERE THE CUSTOM BUILDER OBJECT
     // WILL PROVIDE THE CUSTOM APP COMPONENTS
+    
+    protected AppFileController fileController;
 
     /**
      * This function must be overridden, it should initialize all
@@ -70,6 +73,11 @@ public abstract class AppTemplate extends Application {
      *  Accessor for the style component.
      */
     public AppStyleComponent getStyleComponent() { return styleComponent; }
+    
+    /**
+     *  Accessor for the file controller.
+     */
+    public AppFileController getFileController() { return fileController; }
 
     /**
      *  Accessor for the gui. Note that the GUI would contain the workspace.

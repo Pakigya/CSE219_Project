@@ -327,6 +327,7 @@ public class AppFileController {
             } catch (Exception e) {
                 AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
                 dialog.show(props.getProperty(LOAD_ERROR_TITLE), props.getProperty(LOAD_ERROR_MESSAGE));
+                promptToOpen();
             }
         }
     }
@@ -339,6 +340,11 @@ public class AppFileController {
      */
     public void markFileAsNotSaved() {
         saved = false;
+    }
+    
+    /*marks a file as saves */
+    public void markFileAsSaved() {
+        saved = true;
     }
 
     /**

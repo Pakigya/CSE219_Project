@@ -243,4 +243,9 @@ public class AppGUI {
 	saveButton.getStyleClass().add(CLASS_FILE_BUTTON);
 	exitButton.getStyleClass().add(CLASS_FILE_BUTTON);
     }
+        /**
+     *  Accessor for the file controller.
+     */
+    public AppFileController getFileController() { return fileController; }
+
 }

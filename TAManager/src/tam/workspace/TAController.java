@@ -142,6 +142,9 @@ public class TAController {
     
     void updateToolBar(boolean IsChangeMade)
     {
-         app.getGUI().updateToolbarControls(!IsChangeMade);
+        app.getGUI().getFileController().markFileAsNotSaved();
+         //app.getFileController().markAsEdited(app.getGUI());
+        app.getGUI().updateToolbarControls(!IsChangeMade);
+         //app.getFileController().markFileAsNotSaved();
     }
 }
