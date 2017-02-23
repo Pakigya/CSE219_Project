@@ -54,16 +54,19 @@ public class TAController {
         // DID THE USER NEGLECT TO PROVIDE A TA NAME?
         if (name.isEmpty()) {
 	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
-	    dialog.show(props.getProperty(MISSING_TA_NAME_TITLE), props.getProperty(MISSING_TA_NAME_MESSAGE));            
+	    dialog.show(props.getProperty(MISSING_TA_NAME_TITLE), props.getProperty(MISSING_TA_NAME_MESSAGE));   
+            workspace.getAddButton().setDisable(true);         
         }
         else if (email.isEmpty()) {
 	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
-	    dialog.show(props.getProperty(MISSING_TA_EMAIL_TITLE), props.getProperty(MISSING_TA_EMAIL_MESSAGE));            
+	    dialog.show(props.getProperty(MISSING_TA_EMAIL_TITLE), props.getProperty(MISSING_TA_EMAIL_MESSAGE));     
+            workspace.getAddButton().setDisable(true);       
         }
         // DOES A TA ALREADY HAVE THE SAME NAME OR EMAIL?
         else if (data.containsTA(name, email)) {
 	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
-	    dialog.show(props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE), props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE));                                    
+	    dialog.show(props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE), props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE));
+            workspace.getAddButton().setDisable(true);                                    
         }
         // EVERYTHING IS FINE, ADD A NEW TA
         else {
@@ -77,6 +80,7 @@ public class TAController {
             
             // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
             nameTextField.requestFocus();
+            workspace.getAddButton().setDisable(true);
         }
         updateToolBar(true);
     }

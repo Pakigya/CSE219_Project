@@ -171,6 +171,36 @@ public class TAWorkspace extends AppWorkspaceComponent {
         // NOW LET'S SETUP THE EVENT HANDLING
         controller = new TAController(app);
 
+     
+        
+       
+            
+        
+            addButton.setDisable(true);
+            
+            //addButton.setDisable(false);
+            
+        nameTextField.setOnKeyTyped(e ->{
+             if (nameTextField.getText() == "" || emailTextField.getText()== "")
+            {
+                addButton.setDisable(true);
+            }
+            else
+            {
+                addButton.setDisable(false);
+            }
+        });
+        emailTextField.setOnKeyTyped(e ->{
+             if (nameTextField.getText() == "" || emailTextField.getText()== "")
+            {
+                addButton.setDisable(true);
+            }
+            else
+            {
+                addButton.setDisable(false);
+            }
+        });
+        
         // CONTROLS FOR ADDING TAs
         nameTextField.setOnAction(e -> {
             controller.handleAddTA();
