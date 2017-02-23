@@ -10,6 +10,7 @@ import javafx.beans.property.StringProperty;
 import properties_manager.PropertiesManager;
 import tam.TAManagerApp;
 import tam.TAManagerProp;
+import static tam.style.TAStyle.Hover;
 import tam.workspace.TAWorkspace;
 
 /**
@@ -18,6 +19,7 @@ import tam.workspace.TAWorkspace;
  * all the data from this object
  * 
  * @author Richard McKenna
+ * @coauthor Pakigya Tuladhar
  */
 public class TAData implements AppDataComponent {
 
@@ -372,6 +374,53 @@ public class TAData implements AppDataComponent {
             String remaining = cellText.substring(startIndex+taName.length()+1); //Save the data after the fullname of the TA
             cellText = initial + remaining; //Removes the TA
             cellProp.setValue(cellText);
+        }
+    }
+    
+    /**
+     * This method highlights all the left and above cells when a cell is hovered
+     * @param cellKey
+     */
+    public void highlightDuringHover(String cellKey, boolean flag)
+    {
+        TAWorkspace workspaceComponent = (TAWorkspace)app.getWorkspaceComponent();
+        //TAStyle styleComponent = (TAStyle)app.getStyleComponent();
+        // COLUMNS from 2 to 6 // ROWS from 1 to 22
+        
+        int row =0; int col = 2;
+        String arr[] = cellKey.split("_");
+        int col1 = Integer.parseInt(arr[0]);
+        int row1 = Integer.parseInt(arr[1]);
+        if (flag ==  true)
+        {
+            
+            //workspaceComponent.getOfficeHoursGridPane(getCellKey(col1,0)).getStyleClass().add("-fx-border-color: #fcffc4;");
+            for (row=1; row< row1; row++ )
+            {
+                workspaceComponent.getTACellPane(getCellKey(col1,row)).getStyleClass().add(Hover(flag));
+            }
+
+            //workspaceComponent.getTACellPane(getCellKey(0,row1)).getStyleClass().add("-fx-border-color: #fcffc4;");
+            //workspaceComponent.getTACellPane(getCellKey(1,row1)).getStyleClass().add("-fx-border-color: #fcffc4;");
+            for (col=2;col< col1 ; col++)
+            {
+                workspaceComponent.getTACellPane(getCellKey(col,row1)).getStyleClass().add(Hover(flag));
+            }
+        }
+        else
+        {
+            //workspaceComponent.getTACellPane(getCellKey(col1,0)).getStyleClass().remove(Hover(flag));
+            for (row=1; row< row1; row++ )
+            {
+                workspaceComponent.getTACellPane(getCellKey(col1,row)).getStyleClass().remove(Hover(true));
+            }
+
+            //workspaceComponent.getTACellPane(getCellKey(0,row1)).getStyleClass().remove("-fx-border-color: #fcffc4;");
+            //workspaceComponent.getTACellPane(getCellKey(1,row1)).getStyleClass().remove("-fx-border-color: #fcffc4;");
+            for (col=2;col< col1 ; col++)
+            {
+                workspaceComponent.getTACellPane(getCellKey(col,row1)).getStyleClass().remove(Hover(true));
+            }
         }
     }
 }

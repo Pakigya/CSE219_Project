@@ -34,6 +34,7 @@ import tam.data.TeachingAssistant;
  * the workspace area.
  * 
  * @author Richard McKenna
+ * @coauthor Pakigya Tuladhar
  */
 public class TAWorkspace extends AppWorkspaceComponent {
     // THIS PROVIDES US WITH ACCESS TO THE APP COMPONENTS
@@ -373,6 +374,20 @@ public class TAWorkspace extends AppWorkspaceComponent {
         for (Pane p : officeHoursGridTACellPanes.values()) {
             p.setOnMouseClicked(e -> {
                 controller.handleCellToggle((Pane) e.getSource());
+            });
+        }
+        
+        // CONTROLS FOR MOUSE ENTER IN TA OFFICE HOURS
+        for (Pane p : officeHoursGridTACellPanes.values()) {
+            p.setOnMouseEntered( e-> {
+                controller.handleCellHover((Pane) e.getSource(), true);
+            });
+        }
+        
+        // CONTROLS FOR MOUSE ENTER IN TA OFFICE HOURS
+        for (Pane p : officeHoursGridTACellPanes.values()) {
+            p.setOnMouseExited(e-> {
+                controller.handleCellHover((Pane) e.getSource(), false);
             });
         }
         

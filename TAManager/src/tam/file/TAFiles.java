@@ -31,6 +31,7 @@ import tam.data.TeachingAssistant;
  * services for the application.
  * 
  * @author Richard McKenna
+ * @coauthor Pakigya Tuladhar
  */
 public class TAFiles implements AppFileComponent {
     // THIS IS THE APP ITSELF
@@ -143,11 +144,11 @@ public class TAFiles implements AppFileComponent {
 	jsonWriter.close();
 
 	// INIT THE WRITER
-	OutputStream os = new FileOutputStream(filePath + ".json");
+	OutputStream os = new FileOutputStream(filePath);
 	JsonWriter jsonFileWriter = Json.createWriter(os);
 	jsonFileWriter.writeObject(dataManagerJSO);
 	String prettyPrinted = sw.toString();
-	PrintWriter pw = new PrintWriter(filePath+ ".json");
+	PrintWriter pw = new PrintWriter(filePath);
 	pw.write(prettyPrinted);
 	pw.close();
     }

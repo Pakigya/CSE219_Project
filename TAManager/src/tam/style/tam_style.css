@@ -19,7 +19,7 @@
 }
 
 .text {
-   -fx-font-family: "Courier";
+   -fx-font-family: "Courier New";
 }
 
 .root{
@@ -93,8 +93,8 @@
 .add_ta_button{
     -fx-font-size: 14pt;
     -fx-font-weight: bold;
-  -fx-border-radius: 10 10 10 10;
-  -fx-background-radius: 10 10 10 10;    
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;    
 }
 
 .office_hours_grid{
@@ -135,7 +135,38 @@
     -fx-background-color: #abab78;
     -fx-border-width: 0.5px;
     -fx-border-color: #000000;
-    
+}
+.office_hours_grid_ta_cell_pane:hover{
+    -fx-border-width: 2px;
+    -fx-background-color: #fcff00;
+    -fx-border-color: #fbffc4;
+}
+
+.office_hours_grid_ta_cell_pane_hover{
+    -fx-border-width: 2px;
+    -fx-border-color: #fcffc4;
+    /*-fx-border-color: #abab78;
+    -fx-background-color: #fcffc4;
+    /*#fbffc4;
+    */
+}
+
+.office_hours_grid_ta_cell_pane_hover{
+    -fx-border-width: 2px;
+    -fx-border-color: #fcffc4;
+    /*-fx-border-color: #abab78;
+    -fx-background-color: #fcffc4;
+    /*#fbffc4;
+    */
+}
+
+.office_hours_grid_ta_cell_pane1{
+    -fx-background-color: #abab78;
+    -fx-border-width: 0px;
+    /*
+    -fx-border-width: 0.5px;
+    -fx-border-color: #000000;
+    */
 }
 
 .office_hours_grid_ta_cell_label{

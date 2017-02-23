@@ -16,6 +16,7 @@ import tam.data.TeachingAssistant;
  * toolbar.
  * 
  * @author Richard McKenna
+ * @coauthor Pakigya Tuladhar
  * @version 1.0
  */
 public class TAController {
@@ -130,6 +131,14 @@ public class TAController {
         data.toggleTAOfficeHours(cellKey, taName);
         updateToolBar(true);
     }
+    
+    public void handleCellHover(Pane pane, boolean flag){
+        //GET THE CELL KEY OF THE HOVERED CELL
+        String cellKey = pane.getId();
+        TAData data = (TAData)app.getDataComponent();
+        data.highlightDuringHover(cellKey, flag);
+    }
+    
     
     void updateToolBar(boolean IsChangeMade)
     {

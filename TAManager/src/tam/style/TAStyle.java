@@ -6,6 +6,7 @@ import java.util.HashMap;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.Pane;
 import tam.data.TeachingAssistant;
 import tam.workspace.TAWorkspace;
 
@@ -13,6 +14,7 @@ import tam.workspace.TAWorkspace;
  * This class manages all CSS style for this application.
  * 
  * @author Richard McKenna
+ * @coauthor Pakigya Tuladhar
  * @version 1.0
  */
 public class TAStyle extends AppStyleComponent {
@@ -41,7 +43,9 @@ public class TAStyle extends AppStyleComponent {
     public static String CLASS_OFFICE_HOURS_GRID_TIME_CELL_PANE = "office_hours_grid_time_cell_pane";
     public static String CLASS_OFFICE_HOURS_GRID_TIME_CELL_LABEL = "office_hours_grid_time_cell_label";
     public static String CLASS_OFFICE_HOURS_GRID_TA_CELL_PANE = "office_hours_grid_ta_cell_pane";
+    public static String CLASS_OFFICE_HOURS_GRID_TA_CELL_PANE1 = "office_hours_grid_ta_cell_pane1";
     public static String CLASS_OFFICE_HOURS_GRID_TA_CELL_LABEL = "office_hours_grid_ta_cell_label";
+    public static String CLASS_OFFICE_HOURS_GRID_TA_CELL_PANE_HOVER = "office_hours_grid_ta_cell_pane_hover";
     
     // THIS PROVIDES ACCESS TO OTHER COMPONENTS
     private AppTemplate app;
@@ -80,7 +84,6 @@ public class TAStyle extends AppStyleComponent {
         taTable.getStyleClass().add(CLASS_TA_TABLE);
         for (TableColumn tableColumn : taTable.getColumns()) {
             tableColumn.getStyleClass().add(CLASS_TA_TABLE_COLUMN_HEADER);
-            //tableColumn.getStyleClass().add(CLASS_TA_TABLE_COLUMN_HEADER);
         }
 
         // LEFT SIDE - THE TA DATA ENTRY
@@ -122,4 +125,46 @@ public class TAStyle extends AppStyleComponent {
             n.getStyleClass().add(styleClass);
         }
     }
+    
+    /*
+    public void setHoverStyle( boolean flag, Pane pane){
+       // TAWorkspace workspaceComponent = (TAWorkspace)app.getWorkspaceComponent();
+        if (flag == true)
+        {
+            //workspaceComponent.getTACellPane(cellKey).getStyleClass().add(CLASS_OFFICE_HOURS_GRID_TA_CELL_PANE_HOVER);
+           pane.getStyleClass().add(CLASS_OFFICE_HOURS_GRID_TA_CELL_PANE_HOVER);
+// setStyleClassOnAll(pane, CLASS_OFFICE_HOURS_GRID_TA_CELL_PANE_HOVER);
+            //setStyleClassOnAll(workspaceComponent.getOfficeHoursGridTACellPanes(), CLASS_OFFICE_HOURS_GRID_TA_CELL_PANE_HOVER);
+        }
+        else 
+        {
+            
+        }
+    }*/
+    
+    public static String Hover(boolean flag)
+    {
+        if (flag == true)
+        {
+            return CLASS_OFFICE_HOURS_GRID_TA_CELL_PANE_HOVER;
+        }
+        else
+        {
+            return CLASS_OFFICE_HOURS_GRID_TA_CELL_PANE1;
+        }
+    }
+    /*
+    public void setHoverStyle( boolean flag, String cellKey){
+        TAWorkspace workspaceComponent = (TAWorkspace)app.getWorkspaceComponent();
+        if (flag == true)
+        {
+            workspaceComponent.getTACellPane(cellKey).getStyleClass().add(CLASS_OFFICE_HOURS_GRID_TA_CELL_PANE_HOVER);
+            setStyleClassOnAll(pane, CLASS_OFFICE_HOURS_GRID_TA_CELL_PANE_HOVER);
+            //setStyleClassOnAll(workspaceComponent.getOfficeHoursGridTACellPanes(), CLASS_OFFICE_HOURS_GRID_TA_CELL_PANE_HOVER);
+        }
+        else 
+        {
+            
+        }
+    }*/
 }
