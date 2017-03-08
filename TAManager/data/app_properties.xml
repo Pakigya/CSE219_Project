@@ -5,6 +5,7 @@
     for the standard controls for an app from the Desktop Java Framework, so
     it would not include things initialized for the workspace, which is
     customizable.
+     @coauthor Pakigya Tuladhar
 -->
 <properties>
     <property_list>
@@ -30,8 +31,8 @@
 
         <property name="NEW_ERROR_MESSAGE"              value="An error occured creating New work."></property>
         <property name="NEW_ERROR_TITLE"		value="New Work Error"></property>
-        <property name="LOAD_ERROR_MESSAGE"             value="An error occured loading work."></property>
-        <property name="LOAD_ERROR_TITLE"		value="Load Work Error"></property>
+        <property name="LOAD_ERROR_MESSAGE"             value="An error occured while loading. Please try again."></property>
+        <property name="LOAD_ERROR_TITLE"		value="Loading Error"></property>
         <property name="SAVE_ERROR_MESSAGE"             value="An error occured saving work."></property>
         <property name="SAVE_ERROR_TITLE"		value="Save Work Error"></property>
         <property name="PROPERTIES_LOAD_ERROR_MESSAGE"	value="An error occured loading a properties file."></property>	
@@ -54,12 +55,12 @@
         <property name="SAVE_UNSAVED_WORK_MESSAGE"	value="Do you want to save your unsaved work first?"></property>
 	<property name="SAVE_WORK_TITLE"		value="Save your work"></property>
 	<property name="LOAD_WORK_TITLE"		value="Select work file to load"></property>
-	<property name="WORK_FILE_EXT"			value="json"></property>
+	<property name="WORK_FILE_EXT"			value=".json"></property>
 	<property name="WORK_FILE_EXT_DESC"		value="TA Office Hours"></property>
 
         <!-- WORKSPACE CONTROLS STUFF -->        
         <property name="TAS_HEADER_TEXT"                value="Teaching Assistants"></property>
-        <property name="NAME_COLUMN_TEXT"               value="Name"></property>
+        <property name="NAME_COLUMN_TEXT"               value="Name"></property> 
         <property name="EMAIL_COLUMN_TEXT"              value="Email"></property>
         <property name="NAME_PROMPT_TEXT"               value="Name"></property>
         <property name="EMAIL_PROMPT_TEXT"              value="Email"></property>
