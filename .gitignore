@@ -1,3 +1,16 @@
-#Here we ignore all the class files
 *.class
 **/*.class
+**/*.jar
+**/*.json
+**/*.properties
+PropertiesManager/dist/*
+PropertiesManager/build/*
+TAManager/dist/*
+TAManager/build/*
+DesktopJavaFramework/build/*
+DesktopJavaFramework/nbproject/private/*
+PropertiesManager/nbproject/private/*
+TAManager/nbproject/private/*
+TAManger/work/*
+DesktopJavaFramework/dist/*
+#Here we ignore all the class files

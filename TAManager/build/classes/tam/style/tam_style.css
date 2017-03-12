@@ -12,7 +12,16 @@
 
     Author:	Richard McKenna
     Version:	1.0
+   font-family: 'Courier';
 */
+@font-face {
+   src: url("cour.ttf");
+}
+
+.text {
+   -fx-font-family: "Courier New";
+}
+
 .root{
     
 }
@@ -46,7 +55,16 @@
 }
 
 .header_pane{
-    
+    -fx-background-color: #ccccff;
+    -fx-background-radius: 5.0;
+    -fx-font-size: 16pt;
+    -fx-font-weight: bold;
+    /*
+    -fx-padding: 15;
+    -fx-spacing: 10;
+    -fx-border-width: 2px;
+    -fx-border-color: #7777dd;
+    */
 }
 
 .header_label {
@@ -58,9 +76,12 @@
 }
 
 .table-view .column-header.ta_table_column_header .label {
-    
+    -fx-background-color: #000066;
+    -fx-text-fill: #ffffff;
 }
 
+.ta_table_column_header {
+}
 .add_ta_pane{
     
 }
@@ -72,8 +93,8 @@
 .add_ta_button{
     -fx-font-size: 14pt;
     -fx-font-weight: bold;
-  -fx-border-radius: 10 10 10 10;
-  -fx-background-radius: 10 10 10 10;    
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;    
 }
 
 .office_hours_grid{
@@ -81,31 +102,71 @@
 }
 
 .office_hours_grid_time_column_header_pane{
-    
+    -fx-background-color: #000066;
 }
 
 .office_hours_grid_time_column_header_label{
+    -fx-text-fill: #ffffff;
     
 }
 
 .office_hours_grid_day_column_header_pane{
-    
+    -fx-background-color: #000066;
 }
 
 .office_hours_grid_day_column_header_label{
+    -fx-text-fill: #ffffff;
     
 }
 
 .office_hours_grid_time_cell_pane{
+    -fx-background-color: #000099;
+    -fx-border-width: 0.5px;
+    -fx-border-style: dashed;
+    -fx-border-color: #ffffff;
     
 }
 
 .office_hours_grid_time_cell_label{
-    
+    -fx-text-fill:white;
 }
 
 .office_hours_grid_ta_cell_pane{
-    
+    -fx-background-color: #abab78;
+    -fx-border-width: 0.5px;
+    -fx-border-color: #000000;
+}
+.office_hours_grid_ta_cell_pane:hover{
+    -fx-border-width: 2px;
+    -fx-background-color: #fcff00;
+    -fx-border-color: #fbffc4;
+}
+
+.office_hours_grid_ta_cell_pane_hover{
+    -fx-border-width: 2px;
+    -fx-border-color: #fcffc4;
+    /*-fx-border-color: #abab78;
+    -fx-background-color: #fcffc4;
+    /*#fbffc4;
+    */
+}
+
+.office_hours_grid_ta_cell_pane_hover{
+    -fx-border-width: 2px;
+    -fx-border-color: #fcffc4;
+    /*-fx-border-color: #abab78;
+    -fx-background-color: #fcffc4;
+    /*#fbffc4;
+    */
+}
+
+.office_hours_grid_ta_cell_pane1{
+    -fx-background-color: #abab78;
+    -fx-border-width: 0px;
+    /*
+    -fx-border-width: 0.5px;
+    -fx-border-color: #000000;
+    */
 }
 
 .office_hours_grid_ta_cell_label{
