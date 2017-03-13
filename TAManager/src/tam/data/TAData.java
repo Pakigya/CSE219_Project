@@ -265,7 +265,7 @@ public class TAData implements AppDataComponent {
     }
     public void addTA(String initName, String initEmail) {
         // MAKE THE TA along with email
-        TeachingAssistant ta = new TeachingAssistant(initName, initEmail);
+        TeachingAssistant ta = new TeachingAssistant(initName.trim(), initEmail.trim());
 
         // ADD THE TA along with email
         if (!containsTA(initName)) {
@@ -274,10 +274,10 @@ public class TAData implements AppDataComponent {
         // SORT THE TAS
         Collections.sort(teachingAssistants);
     }
+    
     public void deleteTA(String initName, String initEmail) {
         // Delete THE TA along with email
         TeachingAssistant ta = new TeachingAssistant(initName.trim(), initEmail.trim());
-        
         if (containsTA(ta)) {
             teachingAssistants.remove(ta);
         }

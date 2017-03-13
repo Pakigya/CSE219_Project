@@ -9,6 +9,7 @@ import properties_manager.PropertiesManager;
 import tam.TAManagerApp;
 import tam.data.TAData;
 import tam.data.TeachingAssistant;
+import tam.validators.EmailValidator;
 
 /**
  * This class provides responses to all workspace interactions, meaning
@@ -44,6 +45,7 @@ public class TAController {
         TextField emailTextField = workspace.getEmailTextField();
         String name = nameTextField.getText();
         String email = emailTextField.getText();
+        EmailValidator ev = new EmailValidator();
         
         // WE'LL NEED TO ASK THE DATA SOME QUESTIONS TOO
         TAData data = (TAData)app.getDataComponent();
@@ -55,18 +57,23 @@ public class TAController {
         if (name.isEmpty()) {
 	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
 	    dialog.show(props.getProperty(MISSING_TA_NAME_TITLE), props.getProperty(MISSING_TA_NAME_MESSAGE));   
-            workspace.getAddButton().setDisable(true);         
+            //workspace.getAddButton().setDisable(true);         
         }
         else if (email.isEmpty()) {
 	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
 	    dialog.show(props.getProperty(MISSING_TA_EMAIL_TITLE), props.getProperty(MISSING_TA_EMAIL_MESSAGE));     
-            workspace.getAddButton().setDisable(true);       
+            //workspace.getAddButton().setDisable(true);       
+        }
+        else if (!ev.validate(email)) {
+	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(INVALID_TA_EMAIL_TITLE), props.getProperty(INVALID_TA_EMAIL_MESSAGE));     
+            //workspace.getAddButton().setDisable(true);       
         }
         // DOES A TA ALREADY HAVE THE SAME NAME OR EMAIL?
         else if (data.containsTA(name, email)) {
 	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
 	    dialog.show(props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE), props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE));
-            workspace.getAddButton().setDisable(true);                                    
+            //workspace.getAddButton().setDisable(true);                                    
         }
         // EVERYTHING IS FINE, ADD A NEW TA
         else {
@@ -81,8 +88,8 @@ public class TAController {
             // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
             nameTextField.requestFocus();
             workspace.getAddButton().setDisable(true);
+            updateToolBar(true);
         }
-        updateToolBar(true);
     }
     
     /**

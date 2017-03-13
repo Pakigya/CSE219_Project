@@ -71,7 +71,9 @@
         <property name="MISSING_TA_NAME_TITLE"          value="Missing TA Name"></property>
         <property name="MISSING_TA_NAME_MESSAGE"        value="You must provide a TA Name"></property>
         <property name="MISSING_TA_EMAIL_TITLE"         value="Missing TA Email"></property>
+        <property name="INVALID_TA_EMAIL_TITLE"         value="Invalid TA Email"></property>
         <property name="MISSING_TA_EMAIL_MESSAGE"       value="You must provide a TA Email"></property>
+        <property name="INVALID_TA_EMAIL_MESSAGE"       value="You must provide a valid TA Email"></property>
         <property name="TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE"     value="TA Name and Email Not Unique"></property>
         <property name="TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE"   value="You must provide a unique TA Name and Email"></property>
     </property_list>
