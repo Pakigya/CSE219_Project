@@ -275,6 +275,20 @@ public class TAData implements AppDataComponent {
         Collections.sort(teachingAssistants);
     }
     
+    public void updateTA(String initName, String initEmail, String newName, String newEmail) {
+        // Delete THE TA along with email
+        TeachingAssistant ta = new TeachingAssistant(initName.trim(), initEmail.trim());
+        TeachingAssistant newTA = new TeachingAssistant(newName.trim(), newEmail.trim());
+        if (containsTA(ta)) {
+            teachingAssistants.remove(ta);
+            teachingAssistants.add(newTA);
+            replaceFromEverywhere(initName, newName);
+        }
+        // SORT THE TAS
+        Collections.sort(teachingAssistants);
+            System.out.println(teachingAssistants);
+    }
+    
     public void deleteTA(String initName, String initEmail) {
         // Delete THE TA along with email
         TeachingAssistant ta = new TeachingAssistant(initName.trim(), initEmail.trim());
@@ -332,6 +346,29 @@ public class TAData implements AppDataComponent {
             }
         }
     }
+    /**
+     * This method removes all instances of TA
+     * from the Grid Cell
+     * @param taName 
+     * @param newTAName 
+     */
+    public void replaceFromEverywhere(String taName, String newTAName)
+    {
+        // COLUMNS from 2 to 6 // ROWS from 1 to 22
+        int row =1; int col = 2;
+        for (row=1; row<=22;row++ )
+        {
+            for (col=2;col<=6;col++)
+            {
+                String cellKey = col + "_" + row;
+                StringProperty cellProp = officeHours.get(cellKey);
+                if (isThereTAInCell(cellProp, taName) == true)
+                {
+                    replaceTAFromCell(cellProp, taName, newTAName);
+                }
+            }
+        }
+    }
     
     /**
      * This method checks whether the TA exists in the name office
@@ -373,6 +410,36 @@ public class TAData implements AppDataComponent {
             String initial = cellText.substring(0, startIndex); // Saves the data before the index of TA
             String remaining = cellText.substring(startIndex+taName.length()+1); //Save the data after the fullname of the TA
             cellText = initial + remaining; //Removes the TA
+            cellProp.setValue(cellText);
+        }
+    }
+    
+     /**
+     * This method replaces taName from the office grid cell
+     * represented by cellProp.
+     * @param cellProp
+     * @param taName
+     * @param newName
+     */
+    public void replaceTAFromCell(StringProperty cellProp, String taName, String newName) {
+        // GET THE CELL TEXT
+        String cellText = cellProp.getValue();
+        // IS IT THE ONLY TA IN THE CELL?
+        if (cellText.equals(taName)) {
+            cellProp.setValue(newName);
+        }
+        // IS IT THE FIRST TA IN A CELL WITH MULTIPLE TA'S?
+        else if (cellText.indexOf(taName) == 0) {
+            int startIndex = cellText.indexOf("\n") + 1;
+            cellText = cellText.substring(startIndex);
+            cellProp.setValue(newName + "\n" + cellText);
+        }
+        // IT MUST BE ANOTHER TA IN THE CELL
+        else {
+            int startIndex = cellText.indexOf("\n" + taName);
+            String initial = cellText.substring(0, startIndex); // Saves the data before the index of TA
+            String remaining = cellText.substring(startIndex+taName.length()+1); //Save the data after the fullname of the TA
+            cellText = initial + "\n" + newName +  remaining; //Replaces the TA
             cellProp.setValue(cellText);
         }
     }

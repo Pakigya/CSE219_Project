@@ -59,6 +59,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
     TextField nameTextField;
     TextField emailTextField;
     Button addButton;
+    Button clearButton;
 
     // THE HEADER ON THE RIGHT
     HBox officeHoursHeaderBox;
@@ -76,7 +77,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
     HashMap<String, Label> officeHoursGridTACellLabels;
 
     /**
-     * The contstructor initializes the user interface, except for
+     * The constructor initializes the user interface, except for
      * the full office hours grid, since it doesn't yet know what
      * the hours will be until a file is loaded or a new one is created.
      */
@@ -119,18 +120,22 @@ public class TAWorkspace extends AppWorkspaceComponent {
         String namePromptText = props.getProperty(TAManagerProp.NAME_PROMPT_TEXT.toString());
         String emailPromptText = props.getProperty(TAManagerProp.EMAIL_PROMPT_TEXT.toString());
         String addButtonText = props.getProperty(TAManagerProp.ADD_BUTTON_TEXT.toString());
+        String clearButtonText = props.getProperty(TAManagerProp.CLEAR_BUTTON_TEXT.toString());
         nameTextField = new TextField();
         emailTextField = new TextField();
         nameTextField.setPromptText(namePromptText);
         emailTextField.setPromptText(emailPromptText);
         addButton = new Button(addButtonText);
+        clearButton = new Button(clearButtonText);
         addBox = new HBox();
-        nameTextField.prefWidthProperty().bind(addBox.widthProperty().multiply(.4));
+        nameTextField.prefWidthProperty().bind(addBox.widthProperty().multiply(.3));
         emailTextField.prefWidthProperty().bind(addBox.widthProperty().multiply(.3));
         addButton.prefWidthProperty().bind(addBox.widthProperty().multiply(.2));
+        clearButton.prefWidthProperty().bind(addBox.widthProperty().multiply(.2));
         addBox.getChildren().add(nameTextField);
         addBox.getChildren().add(emailTextField);
         addBox.getChildren().add(addButton);
+        addBox.getChildren().add(clearButton);
 
         // INIT THE HEADER ON THE RIGHT
         officeHoursHeaderBox = new HBox();
@@ -170,11 +175,6 @@ public class TAWorkspace extends AppWorkspaceComponent {
 
         // NOW LET'S SETUP THE EVENT HANDLING
         controller = new TAController(app);
-
-     
-        
-       
-            
         
             addButton.setDisable(true);
             
@@ -191,7 +191,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
             }
         });
         emailTextField.setOnKeyTyped(e ->{
-             if (nameTextField.getText() == "" || emailTextField.getText()== "")
+             if (nameTextField.getText().trim() == "" || emailTextField.getText().trim() == "")
             {
                 addButton.setDisable(true);
             }
@@ -209,14 +209,21 @@ public class TAWorkspace extends AppWorkspaceComponent {
             controller.handleAddTA();
         });
         addButton.setOnAction(e -> {
-            controller.handleAddTA();
+            controller.handleAddUpdateTA();
+        });
+        
+        clearButton.setOnAction(e -> {
+           controller.clearUpdate(); 
         });
        
+       taTable.setOnMouseClicked(e ->{
+          controller.handleShowUpdateTA();
+       });
+        
        taTable.setOnKeyPressed(e -> {
            if (e.getCode() == KeyCode.DELETE )
            {
                controller.handleDeleteTA();
-               
            }  
        });
        
