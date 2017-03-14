@@ -18,12 +18,16 @@
         <property name="NEW_ICON"	    value="New.png"></property>
         <property name="LOAD_ICON"	    value="Load.png"></property>
         <property name="SAVE_ICON"	    value="Save.png"></property>
+        <property name="SAVE_AS_ICON"	    value="SaveAs.png"></property>
+        <property name="EXPORT_ICON"	    value="Export.png"></property>
         <property name="EXIT_ICON"          value="Exit.png"></property> 
         
         <!-- TOOLTIPS FOR BUTTONS -->
         <property name="NEW_TOOLTIP"		value="Build a new TA Grid"></property>
         <property name="LOAD_TOOLTIP"		value="Load an existing TA Grid"></property>
         <property name="SAVE_TOOLTIP"		value="Save the current TA Grid"></property>
+        <property name="SAVE_AS_TOOLTIP"        value="Save the current TA Grid"></property>
+        <property name="EXPORT_TOOLTIP"		value="Save the current TA Grid"></property>
         <property name="EXIT_TOOLTIP"		value="Exit the Application"></property>
         
         <!-- ERROR MESSAGES -->
@@ -48,6 +52,8 @@
         <property name="SAVE_COMPLETED_TITLE"		value="Saving Completed"></property>
         <property name="SAVE_UNSAVED_WORK_MESSAGE"	value="Would you like to save your unsaved work first?"></property>
         <property name="SAVE_UNSAVED_WORK_TITLE"	value="Save unsaved work?"></property>
+	<property name="UPDATE_TIME_MESSAGE"            value="Would you like to update the time even when it deletes some data?"></property>
+        <property name="UPDATE_TIME_TITLE"              value="Updating Time?"></property>
 	
         <property name="NEW_CREATED_MESSAGE"		value="New Work Created but not yet Saved"></property>
         <property name="WORK_LOADED_MESSAGE"		value="The Work has been Loaded"></property>
@@ -68,6 +74,10 @@
         <property name="UPDATE_BUTTON_TEXT"             value="Update TA"></property>
         <property name="CLEAR_BUTTON_TEXT"              value="Clear"></property>
         <property name="OFFICE_HOURS_SUBHEADER"         value="Office Hours Grid"></property>
+        <property name="TIME_HEADER_TEXT"               value="Change time"></property>
+        <property name="START_TIME_TEXT"                value="Start Time"></property> 
+        <property name="END_TIME_TEXT"                  value="End Time"></property>
+        <property name="UPDATE_TIME_TEXT"               value="Update Time"></property>
         
         <!-- WORKSPACE ERROR MESSAGES -->
         <property name="MISSING_TA_NAME_TITLE"          value="Missing TA Name"></property>

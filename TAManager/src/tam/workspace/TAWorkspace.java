@@ -8,6 +8,7 @@ import tam.TAManagerApp;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
@@ -64,6 +65,15 @@ public class TAWorkspace extends AppWorkspaceComponent {
     // THE HEADER ON THE RIGHT
     HBox officeHoursHeaderBox;
     Label officeHoursHeaderLabel;
+    
+    // FOR THE HEADER AT THE RIGHT SIDE
+    HBox updateTimeHeaderBox;
+    Label updateTimeHeaderLabel;
+    Label updateStartTimeLabel;
+    Label updateEndTimeLabel;
+    ComboBox updateStartTimeComboBox;
+    ComboBox updateEndTimeComboBox;
+    Button updateTimeButton;
     
     // THE OFFICE HOURS GRID
     GridPane officeHoursGridPane;
@@ -154,18 +164,45 @@ public class TAWorkspace extends AppWorkspaceComponent {
         officeHoursGridTACellPanes = new HashMap();
         officeHoursGridTACellLabels = new HashMap();
 
+
+        // INIT THE HEADER ON THE LEFT
+        updateTimeHeaderBox = new HBox();
+        String timeHeaderText = props.getProperty(TAManagerProp.UPDATE_TIME_TEXT.toString());
+        updateTimeHeaderLabel = new Label(timeHeaderText);
+        String startTimeText = props.getProperty(TAManagerProp.START_TIME_TEXT.toString());
+        updateStartTimeLabel = new Label(startTimeText);
+        String endTimeText = props.getProperty(TAManagerProp.END_TIME_TEXT.toString());
+        updateEndTimeLabel = new Label(endTimeText);
+        updateTimeHeaderBox.getChildren().add(updateTimeHeaderLabel);
+        updateStartTimeComboBox = new ComboBox(data.getOptions());
+        updateEndTimeComboBox = new ComboBox(data.getOptions());
+        String updateButtonText = props.getProperty(TAManagerProp.UPDATE_TIME_TEXT.toString());
+        updateTimeButton = new Button(updateButtonText);
+        
         // ORGANIZE THE LEFT AND RIGHT PANES
         VBox leftPane = new VBox();
         leftPane.getChildren().add(tasHeaderBox);        
         leftPane.getChildren().add(taTable);        
         leftPane.getChildren().add(addBox);
+        
         VBox rightPane = new VBox();
         rightPane.getChildren().add(officeHoursHeaderBox);
         rightPane.getChildren().add(officeHoursGridPane);
         
+        VBox sidePane = new VBox();
+        sidePane.getChildren().add(updateTimeHeaderBox);
+        sidePane.getChildren().add(updateStartTimeLabel);
+        sidePane.getChildren().add(updateStartTimeComboBox);
+        sidePane.getChildren().add(updateEndTimeLabel);
+        sidePane.getChildren().add(updateEndTimeComboBox);
+        sidePane.getChildren().add(updateTimeButton);
+
         // BOTH PANES WILL NOW GO IN A SPLIT PANE
-        SplitPane sPane = new SplitPane(leftPane, new ScrollPane(rightPane));
-        workspace = new BorderPane();
+        SplitPane sPane = new SplitPane(leftPane, new ScrollPane(rightPane), sidePane);
+        
+        //DIVIDE THE PANE EVENLY
+        sPane.setDividerPositions(0.4f, 0.9f, 0.95f);
+         workspace = new BorderPane();
         
         // AND PUT EVERYTHING IN THE WORKSPACE
         ((BorderPane) workspace).setCenter(sPane);
@@ -260,7 +297,38 @@ public class TAWorkspace extends AppWorkspaceComponent {
     public Button getAddButton() {
         return addButton;
     }
+    
+    public Button getClearButton() {
+        return clearButton;
+    }
 
+    // ACCESSING THE RIGHT SIDE PANE
+    
+    public HBox getUpdateTimeHeaderBox() {
+        return updateTimeHeaderBox;
+    }
+
+    public Label getUpdateTimeHeaderLabel() {
+        return updateTimeHeaderLabel;
+    }
+    public Label getUpdateStartTimeLabel() {
+        return updateEndTimeLabel;
+    }
+    
+    public ComboBox getUpdateStartTimeComboBox() {
+        return updateStartTimeComboBox;
+    }
+    
+    public Label getUpdateEndTimeLabel() {
+        return updateEndTimeLabel;
+    }
+    
+    public ComboBox getUpdateEndTimeComboBox() {
+        return updateEndTimeComboBox;
+    }
+    
+    // ACCESSING THE RIGHT PANE
+    
     public HBox getOfficeHoursSubheaderBox() {
         return officeHoursHeaderBox;
     }

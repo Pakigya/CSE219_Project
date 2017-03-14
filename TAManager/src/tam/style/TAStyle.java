@@ -94,6 +94,10 @@ public class TAStyle extends AppStyleComponent {
         // RIGHT SIDE - THE HEADER
         workspaceComponent.getOfficeHoursSubheaderBox().getStyleClass().add(CLASS_HEADER_PANE);
         workspaceComponent.getOfficeHoursSubheaderLabel().getStyleClass().add(CLASS_HEADER_LABEL);
+        
+        //RIGHT SIDE (SIDE) - THE HEADER
+        workspaceComponent.getUpdateTimeHeaderBox().getStyleClass().add(CLASS_HEADER_PANE);
+        workspaceComponent.getUpdateTimeHeaderLabel().getStyleClass().add(CLASS_HEADER_LABEL);
     }
     
     /**

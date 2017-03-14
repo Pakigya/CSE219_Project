@@ -105,6 +105,38 @@ public class TAData implements AppDataComponent {
         return endHour;
     }
     
+    public ObservableList<String> getOptions(){
+        //ObservableList<String> options = new ObservableList<String>();
+        ObservableList<String> options = FXCollections.observableArrayList();
+        /*return  FXCollections.observableArrayList(
+        "Option 1",
+        "Option 2",
+        "Option 3"
+    );*/
+        options.add("12:00 am");
+        int hour=1;
+        String minutesText = "00";
+        
+        /*if (!onHour) {
+            minutesText = "30";
+        }*/
+        int hourToAdd;
+        for (hour=1; hour<24;hour++)
+        {
+            hourToAdd = hour;
+            if (hour > 12) {
+                hourToAdd -= 12;
+                options.add(hourToAdd + ":" + minutesText + " pm");
+            }
+            else
+            {
+                options.add(hourToAdd + ":" + minutesText + " am");
+            }
+        }
+        return options;
+    }   
+
+    
     public ArrayList<String> getGridHeaders() {
         return gridHeaders;
     }
