@@ -23,3 +23,7 @@ This program helps user to create a website to showcase the TAs added through th
 
 * Hope the project turns out to be great such that I can turn it into a VR generating website. Wish me LUCK!!!
     I hope this can be done.
+    
+### DEMO ###
+
+*  <a href="/TAManagerTester/public_html/syllabus.html"> Click Here to see a sample syllabus </a>
