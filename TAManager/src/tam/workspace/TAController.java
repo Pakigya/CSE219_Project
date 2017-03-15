@@ -45,7 +45,8 @@ public class TAController {
         TAWorkspace workspace = (TAWorkspace)app.getWorkspaceComponent();
         Button addButton =  workspace.getAddButton();
         String buttonText = addButton.getText();
-        if (buttonText.toLowerCase().contains(props.getProperty(TAManagerProp.ADD_BUTTON_TEXT.toString())))
+        String compareText = props.getProperty(TAManagerProp.ADD_BUTTON_TEXT.toString()).toLowerCase();
+        if (buttonText.toLowerCase().contains(compareText))
         {
             handleAddTA();
         }
@@ -102,15 +103,6 @@ public class TAController {
         else {
             // ADD THE NEW TA TO THE DATA
             data.addTA(name, email);
-            
-            // CLEAR THE TEXT FIELDS
-            /*
-            nameTextField.setText("");
-            emailTextField.setText("");
-            
-            // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
-            nameTextField.requestFocus();
-            */
             clearUpdate();
             workspace.getAddButton().setDisable(true);
             updateToolBar(true);
@@ -144,6 +136,7 @@ public class TAController {
         TeachingAssistant ta = (TeachingAssistant)selectedItem;
         String taName = ta.getName();
         String taEmail = ta.getEmail();
+        boolean isError=false;
         
         // DID THE USER NEGLECT TO PROVIDE A TA NAME?
         if (name.isEmpty()) {
@@ -162,17 +155,22 @@ public class TAController {
             //workspace.getAddButton().setDisable(true);       
         }
         // DOES A TA ALREADY HAVE THE SAME NAME OR EMAIL?
-        else if (data.containsTA(name, email)) {
-	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
-	    dialog.show(props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE), props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE));
-            //workspace.getAddButton().setDisable(true);                                    
-        }
+        else{
+            data.tempRemoveTA(taName, taEmail);
+            if (data.containsTA(name, email)) {
+                AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+                dialog.show(props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE), props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE));
+                isError= true;
+            }
+            data.addTA(taName, taEmail);
         // EVERYTHING IS FINE, UPDATE TA
-        else {
-            data.updateTA(taName, taEmail, name, email);
-            clearUpdate();
-            workspace.getAddButton().setDisable(true);
-            updateToolBar(true);
+            if (isError==false)
+            {
+                data.updateTA(taName, taEmail, name, email);
+                clearUpdate();
+                workspace.getAddButton().setDisable(true);
+                updateToolBar(true);
+            }
         }
     }
     
@@ -191,6 +189,8 @@ public class TAController {
         TextField nameTextField = workspace.getNameTextField();
         TextField emailTextField = workspace.getEmailTextField();
         Button addButton = workspace.getAddButton();
+
+        // CLEAR THE TEXT FIELDS
         nameTextField.setText("");
         emailTextField.setText("");
         taTable.getSelectionModel().clearSelection();
@@ -296,7 +296,6 @@ public class TAController {
         TAData data = (TAData)app.getDataComponent();
         data.highlightDuringHover(cellKey, flag);
     }
-    
     
     void updateToolBar(boolean IsChangeMade)
     {
