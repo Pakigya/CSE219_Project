@@ -26,4 +26,4 @@ This program helps user to create a website to showcase the TAs added through th
     
 ### DEMO ###
 
-*  <a href="/TAManagerTester/public_html/syllabus.html"> Click Here to see a sample syllabus </a>
+*  <a href="/CSE219_Project/TAManagerTester/public_html/syllabus.html"> Click Here to see a sample syllabus </a>
