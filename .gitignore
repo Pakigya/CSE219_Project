@@ -14,3 +14,6 @@ TAManager/nbproject/private/*
 TAManger/work/*
 DesktopJavaFramework/dist/*
 #Here we ignore all the class files
+/jTPS/build/
+/jTPS/nbproject/private/
+/jTPS/dist/
