@@ -23,6 +23,12 @@ public interface AppFileComponent {
      * write app data to a file in the necessary format.
      */
     public JsonObject saveJsonData(AppDataComponent data) throws IOException;
+    
+    /**
+     * This function must be overridden in the actual component and would
+     * write app data to a file in the necessary format.
+     */
+    public JsonObject saveJsonData(AppDataComponent data, int start, int end) throws IOException;
 
     /**
      * This function must be overridden in the actual component and would

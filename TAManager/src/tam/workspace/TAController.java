@@ -2,10 +2,18 @@ package tam.workspace;
 
 import static tam.TAManagerProp.*;
 import djf.ui.AppMessageDialogSingleton;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import tam.transaction.jTPS;
 import properties_manager.PropertiesManager;
 import tam.TAManagerApp;
@@ -355,6 +363,7 @@ public class TAController {
     }
     
     public void handleUpdateTimeGrid(){
+        
         // GET THE WORKSPACE
         TAWorkspace workspace = (TAWorkspace)app.getWorkspaceComponent();
         TAData data = (TAData)app.getDataComponent();
@@ -370,18 +379,35 @@ public class TAController {
 	    dialog.show(props.getProperty(INVALID_UPDATE_TIME_TITLE), props.getProperty(INVALID_UPDATE_TIME_MESSAGE));  
         }
         // EVERYTHING IS FINE, UPDATE TIME and GRID
-        else if (startTime>data.getStartHour() || endTime<data.getEndHour()){
+        /*else if (startTime>data.getStartHour() || endTime<data.getEndHour()){
             AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
 	    dialog.show(props.getProperty(INVALID_UPDATE_TIME_TITLE), props.getProperty(INVALID_UPDATE_TIME_MESSAGE));  
-        }   
+        } */  
         else{
-            data.initHours(startTime+"", endTime+"");
-            /*
-            clearUpdate();
-            workspace.getAddButton().setDisable(true);
-            */
+            data.setStartHour(startTime);
+            data.setEndHour(endTime);
+            JsonObject json;
+            try {
+                json = app.getFileComponent().saveJsonData(data, startTime, endTime);
+           
+            // RESET THE WORKSPACE
+                app.getWorkspaceComponent().resetWorkspace();
+
+            // RESET THE DATA
+                //app.getDataComponent().resetData();
+            
+                data.initHours(startTime+"", endTime+"");
+            
+            // LOAD THE FILE INTO THE DATA
+                 app.getFileComponent().loadJsonData(data,json);
+            // MAKE SURE THE WORKSPACE IS ACTIVATED
+                app.getWorkspaceComponent().activateWorkspace(app.getGUI().getAppPane());
+            
             updateToolBar(true);
             handleAddTransaction();
+             } catch (IOException ex) {
+                System.out.println("Didnot save to json");
+            }
         }
     }
     

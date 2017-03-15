@@ -240,6 +240,52 @@ public class TAFiles implements AppFileComponent {
 	
         return dataManagerJSO;
     }
+
+    
+    /**
+     * This method helps us to change the data on the UI to a json object so that we can save it
+     * @param data
+     * @return
+     * @throws IOException 
+     */
+    public JsonObject saveJsonData(AppDataComponent data, int start, int end) throws IOException {
+	// GET THE DATA
+	TAData dataManager = (TAData)data;
+
+	// NOW BUILD THE TA JSON OBJECTS TO SAVE
+	JsonArrayBuilder taArrayBuilder = Json.createArrayBuilder();
+	ObservableList<TeachingAssistant> tas = dataManager.getTeachingAssistants();
+	for (TeachingAssistant ta : tas) {	    
+	    JsonObject taJson = Json.createObjectBuilder()
+		    .add(JSON_NAME, ta.getName())
+		    .add(JSON_EMAIL, ta.getEmail()).build();
+	    taArrayBuilder.add(taJson);
+	}
+	JsonArray undergradTAsArray = taArrayBuilder.build();
+
+	// NOW BUILD THE TIME SLOT JSON OBJECTS TO SAVE
+	JsonArrayBuilder timeSlotArrayBuilder = Json.createArrayBuilder();
+	ArrayList<TimeSlot> officeHours = TimeSlot.buildOfficeHoursList(dataManager);
+	for (TimeSlot ts : officeHours) {	    
+	    JsonObject tsJson = Json.createObjectBuilder()
+		    .add(JSON_DAY, ts.getDay())
+		    .add(JSON_TIME, ts.getTime())
+		    .add(JSON_NAME, ts.getName()).build();
+	    timeSlotArrayBuilder.add(tsJson);
+	}
+	JsonArray timeSlotsArray = timeSlotArrayBuilder.build();
+        
+	// THEN PUT IT ALL TOGETHER IN A JsonObject
+	JsonObject dataManagerJSO = Json.createObjectBuilder()
+		.add(JSON_START_HOUR, "" + start)
+		.add(JSON_END_HOUR, "" + end)
+                .add(JSON_UNDERGRAD_TAS, undergradTAsArray)
+                .add(JSON_OFFICE_HOURS, timeSlotsArray)
+		.build();
+	
+        return dataManagerJSO;
+    }
+
     
     // IMPORTING/EXPORTING DATA IS USED WHEN WE READ/WRITE DATA IN AN
     // ADDITIONAL FORMAT USEFUL FOR ANOTHER PURPOSE, LIKE ANOTHER APPLICATION

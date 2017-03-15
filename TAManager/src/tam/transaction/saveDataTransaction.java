@@ -6,15 +6,11 @@
 package tam.transaction;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import tam.transaction.*;
 import tam.TAManagerApp;
 import tam.data.TAData;
 
@@ -84,16 +80,12 @@ public class saveDataTransaction implements jTPS_Transaction {
             //app.getWorkspaceComponent().reloadWorkspace(data);
             
             // LOAD THE FILE INTO THE DATA
-            //app.getFileComponent().loadJsonData(app.getDataComponent());
             app.getFileComponent().loadJsonData(app.getDataComponent(),json);
             
             // MAKE SURE THE WORKSPACE IS ACTIVATED
             app.getWorkspaceComponent().activateWorkspace(app.getGUI().getAppPane());
-            System.out.print("does it reach here? DOOO") ;
 
-        //app.getFileComponent().loadData(data, );
         } catch (IOException ex) {
-            System.out.print("cant do lol!") ;
         }
         
                 

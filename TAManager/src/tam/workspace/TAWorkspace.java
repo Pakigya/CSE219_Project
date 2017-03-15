@@ -186,6 +186,8 @@ public class TAWorkspace extends AppWorkspaceComponent {
         String updateButtonText = props.getProperty(TAManagerProp.UPDATE_TIME_TEXT.toString());
         updateTimeButton = new Button(updateButtonText);
         
+        updateStartTimeComboBox.getSelectionModel().select(data.getStartHour());
+        updateEndTimeComboBox.getSelectionModel().select(data.getEndHour());
         
         //JUST CHECKING DO AND UNDO
         doButton = new Button("do");
@@ -299,6 +301,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
        // FOR UPDATING TA OFFICE HOUR GRID USING COMBOBOX
        updateTimeButton.setOnAction(e -> {
            
+           System.out.println("khoi k bhayo to json");
            controller.handleUpdateTimeGrid();
        });
        
@@ -460,6 +463,13 @@ public class TAWorkspace extends AppWorkspaceComponent {
     public String buildCellText(int militaryHour, String minutes) {
         // FIRST THE START AND END CELLS
         int hour = militaryHour;
+        
+        if (hour==0){
+            hour = 12;
+            String cellText = "" + hour + ":" + minutes;
+            cellText += "am";
+            return cellText;
+        }
         if (hour > 12) {
             hour -= 12;
         }
@@ -522,20 +532,29 @@ public class TAWorkspace extends AppWorkspaceComponent {
             // START TIME COLUMN
             int col = 0;
             addCellToGrid(dataComponent, officeHoursGridTimeCellPanes, officeHoursGridTimeCellLabels, col, row);
-            dataComponent.getCellTextProperty(col, row).set(buildCellText(12, "00"));
+            dataComponent.getCellTextProperty(col, row).set(buildCellText(0, "00"));
             addCellToGrid(dataComponent, officeHoursGridTimeCellPanes, officeHoursGridTimeCellLabels, col, row+1);
-            dataComponent.getCellTextProperty(col, row+1).set(buildCellText(12, "30"));
+            dataComponent.getCellTextProperty(col, row+1).set(buildCellText(0, "30"));
 
             // END TIME COLUMN
             col++;
             //int endHour = 12;
             addCellToGrid(dataComponent, officeHoursGridTimeCellPanes, officeHoursGridTimeCellLabels, col, row);
-            dataComponent.getCellTextProperty(col, row).set(buildCellText(12, "30"));
+            dataComponent.getCellTextProperty(col, row).set(buildCellText(0, "30"));
             addCellToGrid(dataComponent, officeHoursGridTimeCellPanes, officeHoursGridTimeCellLabels, col, row+1);
             dataComponent.getCellTextProperty(col, row+1).set(buildCellText(1, "00"));
             col++;
+            
+            // AND NOW ALL THE TA TOGGLE CELLS
+            while (col < 7) {
+                addCellToGrid(dataComponent, officeHoursGridTACellPanes, officeHoursGridTACellLabels, col, row);
+                addCellToGrid(dataComponent, officeHoursGridTACellPanes, officeHoursGridTACellLabels, col, row+1);
+                col++;
+            }
+            
             startTime = 1;
             row += 2;
+            
         }
         //for (int i = dataComponent.getStartHour(); i < dataComponent.getEndHour(); i++) {
         for (int i = startTime; i < endTime; i++) {

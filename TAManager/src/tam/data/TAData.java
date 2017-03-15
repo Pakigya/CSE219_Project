@@ -115,6 +115,14 @@ public class TAData implements AppDataComponent, Cloneable {
         return endHour;
     }
     
+    public void setStartHour(int start) {
+        startHour = start;
+    }
+
+    public void setEndHour(int end) {
+        endHour = end;
+    }
+    
     public ObservableList<String> getOptions(){
         //ObservableList<String> options = new ObservableList<String>();
         ObservableList<String> options = FXCollections.observableArrayList();
@@ -139,7 +147,11 @@ public class TAData implements AppDataComponent, Cloneable {
             }
         }
         return options;
-    }   
+    }
+    
+//    public getIndex(int hour){
+//        if 
+//    }
 
     
     public ArrayList<String> getGridHeaders() {
@@ -188,16 +200,28 @@ public class TAData implements AppDataComponent, Cloneable {
     }
     
     public String getCellKey(String day, String time) {
+        ///FIX THIS FOR PROPER TIME GRID
+        
         int col = gridHeaders.indexOf(day);
         int row = 1;
         int hour = Integer.parseInt(time.substring(0, time.indexOf("_")));
         int milHour = hour;
-        if (hour < startHour)
-            milHour += 12;
-        row += (milHour - startHour) * 2;
-        if (time.contains("_30"))
-            row += 1;
-        return getCellKey(col, row);
+        
+        if (time.contains("am") && time.contains("12"))
+        {
+            row += startHour;
+        }
+        else if (time.contains("am")){
+            row += (milHour - startHour);
+        }
+        else
+        {
+            row += (milHour - startHour)+12;
+        }    
+            if (time.contains("_30"))
+                row += 1;
+            return getCellKey(col, row);
+        
     }
     
     public TeachingAssistant getTA(String testName) {
