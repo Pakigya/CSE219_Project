@@ -46,6 +46,9 @@ public class TAWorkspace extends AppWorkspaceComponent {
 
     // NOTE THAT EVERY CONTROL IS PUT IN A BOX TO HELP WITH ALIGNMENT
     
+    // Check if the first transaction is done or not
+    boolean isFirstTransactionDone=false;
+    
     // FOR THE HEADER ON THE LEFT
     HBox tasHeaderBox;
     Label tasHeaderLabel;
@@ -74,6 +77,10 @@ public class TAWorkspace extends AppWorkspaceComponent {
     ComboBox updateStartTimeComboBox;
     ComboBox updateEndTimeComboBox;
     Button updateTimeButton;
+    
+    //JUST CHECKING DO AND UNDO BUTTONS
+    Button doButton;
+    Button undoButton;
     
     // THE OFFICE HOURS GRID
     GridPane officeHoursGridPane;
@@ -179,6 +186,11 @@ public class TAWorkspace extends AppWorkspaceComponent {
         String updateButtonText = props.getProperty(TAManagerProp.UPDATE_TIME_TEXT.toString());
         updateTimeButton = new Button(updateButtonText);
         
+        
+        //JUST CHECKING DO AND UNDO
+        doButton = new Button("do");
+        undoButton = new Button("undo");
+        
         // ORGANIZE THE LEFT AND RIGHT PANES
         VBox leftPane = new VBox();
         leftPane.getChildren().add(tasHeaderBox);        
@@ -196,7 +208,11 @@ public class TAWorkspace extends AppWorkspaceComponent {
         sidePane.getChildren().add(updateEndTimeLabel);
         sidePane.getChildren().add(updateEndTimeComboBox);
         sidePane.getChildren().add(updateTimeButton);
-
+        
+        //Adding do and undo buttons to the sidepane
+        sidePane.getChildren().add(doButton);
+        sidePane.getChildren().add(undoButton);
+        
         // BOTH PANES WILL NOW GO IN A SPLIT PANE
         SplitPane sPane = new SplitPane(leftPane, new ScrollPane(rightPane), sidePane);
         
@@ -217,6 +233,14 @@ public class TAWorkspace extends AppWorkspaceComponent {
             
             //addButton.setDisable(false);
             
+        
+        //ADDING THE FIRST TRANSACTION WHEN THE APP LOADS
+        
+        if (data.isLoaded)
+        {
+            controller.handleAddTransaction();
+        }
+               
         nameTextField.setOnKeyTyped(e ->{
              if (nameTextField.getText() == "" || emailTextField.getText()== "")
             {
@@ -238,32 +262,71 @@ public class TAWorkspace extends AppWorkspaceComponent {
             }
         });
         
-        // CONTROLS FOR ADDING TAs
-        nameTextField.setOnAction(e -> {
-            controller.handleAddTA();
+        // CONTROLS FOR ADDING and UPDATING TAs
+        nameTextField.setOnAction(e -> { 
+               updateInitialTransaction();               
+            controller.handleAddUpdateTA();
         });
         emailTextField.setOnAction(e -> {
-            controller.handleAddTA();
+               updateInitialTransaction();
+            controller.handleAddUpdateTA();
         });
         addButton.setOnAction(e -> {
+               updateInitialTransaction();
             controller.handleAddUpdateTA();
         });
         
         clearButton.setOnAction(e -> {
+            updateInitialTransaction();
            controller.clearUpdate(); 
         });
        
        taTable.setOnMouseClicked(e ->{
+          updateInitialTransaction();
           controller.handleShowUpdateTA();
        });
-        
+       
+       // FOR DELETING TA
        taTable.setOnKeyPressed(e -> {
            if (e.getCode() == KeyCode.DELETE )
            {
+               updateInitialTransaction();
                controller.handleDeleteTA();
            }  
        });
        
+       
+       // FOR UPDATING TA OFFICE HOUR GRID USING COMBOBOX
+       updateTimeButton.setOnAction(e -> {
+           
+           controller.handleUpdateTimeGrid();
+       });
+       
+       //FOR ADDING DOING UNDOING TRANSACTIONS
+        doButton.setOnAction(e -> {
+            controller.handleDoTransaction();
+        });
+        undoButton.setOnAction(e -> {
+            controller.handleUndoTransaction();
+        });
+        
+        // Adding Do and Undo for key events
+        sPane.setOnKeyPressed(e -> {
+           if (e.getCode() == KeyCode.Z && e.isControlDown() )
+           {
+            controller.handleUndoTransaction();
+           }  
+           if (e.isControlDown() && e.getCode() == KeyCode.Y )
+           {
+            controller.handleDoTransaction();
+           }  
+        });
+       
+        
+    }
+    
+    private void updateInitialTransaction(){
+        if(!isFirstTransactionDone){ controller.handleAddTransaction(); isFirstTransactionDone=true;}
     }
     
     // WE'LL PROVIDE AN ACCESSOR METHOD FOR EACH VISIBLE COMPONENT
@@ -431,6 +494,10 @@ public class TAWorkspace extends AppWorkspaceComponent {
         reloadOfficeHoursGrid(taData);
     }
 
+    public void reloadWorkspace(AppDataComponent dataComponent, int startTime, int endTime) {
+        TAData taData = (TAData)dataComponent;
+        reloadOfficeHoursGrid(taData);
+    }
     public void reloadOfficeHoursGrid(TAData dataComponent) {        
         ArrayList<String> gridHeaders = dataComponent.getGridHeaders();
 
@@ -449,7 +516,29 @@ public class TAWorkspace extends AppWorkspaceComponent {
         // THEN THE TIME AND TA CELLS
         // FILLS 4 CELLS AT A GIVEN TIME
         int row = 1;
-        for (int i = dataComponent.getStartHour(); i < dataComponent.getEndHour(); i++) {
+        int startTime = dataComponent.getStartHour();
+        int endTime = dataComponent.getEndHour();
+        if (startTime==0){
+            // START TIME COLUMN
+            int col = 0;
+            addCellToGrid(dataComponent, officeHoursGridTimeCellPanes, officeHoursGridTimeCellLabels, col, row);
+            dataComponent.getCellTextProperty(col, row).set(buildCellText(12, "00"));
+            addCellToGrid(dataComponent, officeHoursGridTimeCellPanes, officeHoursGridTimeCellLabels, col, row+1);
+            dataComponent.getCellTextProperty(col, row+1).set(buildCellText(12, "30"));
+
+            // END TIME COLUMN
+            col++;
+            //int endHour = 12;
+            addCellToGrid(dataComponent, officeHoursGridTimeCellPanes, officeHoursGridTimeCellLabels, col, row);
+            dataComponent.getCellTextProperty(col, row).set(buildCellText(12, "30"));
+            addCellToGrid(dataComponent, officeHoursGridTimeCellPanes, officeHoursGridTimeCellLabels, col, row+1);
+            dataComponent.getCellTextProperty(col, row+1).set(buildCellText(1, "00"));
+            col++;
+            startTime = 1;
+            row += 2;
+        }
+        //for (int i = dataComponent.getStartHour(); i < dataComponent.getEndHour(); i++) {
+        for (int i = startTime; i < endTime; i++) {
             // START TIME COLUMN
             int col = 0;
             addCellToGrid(dataComponent, officeHoursGridTimeCellPanes, officeHoursGridTimeCellLabels, col, row);

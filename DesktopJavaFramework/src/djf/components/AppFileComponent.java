@@ -1,7 +1,7 @@
 package djf.components;
 
 import java.io.IOException;
-
+import javax.json.JsonObject;
 /**
  * This interface provides the structure for file components in
  * our applications. This lets us call save and load methods from
@@ -20,9 +20,22 @@ public interface AppFileComponent {
 
     /**
      * This function must be overridden in the actual component and would
+     * write app data to a file in the necessary format.
+     */
+    public JsonObject saveJsonData(AppDataComponent data) throws IOException;
+
+    /**
+     * This function must be overridden in the actual component and would
      * read app data from a file in the necessary format.
      */
     public void loadData(AppDataComponent data, String filePath) throws IOException;
+
+    /**
+     * This function must be overridden in the actual component and would
+     * read app data and return the necessary json
+     */
+    //public void loadJsonData(AppDataComponent data) throws IOException;
+    public void loadJsonData(AppDataComponent data, JsonObject json) throws IOException;
 
     /**
      * This function must be overridden in the actual component and would

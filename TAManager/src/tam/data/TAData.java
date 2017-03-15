@@ -21,7 +21,7 @@ import tam.workspace.TAWorkspace;
  * @author Richard McKenna
  * @coauthor Pakigya Tuladhar
  */
-public class TAData implements AppDataComponent {
+public class TAData implements AppDataComponent, Cloneable {
 
     // WE'LL NEED ACCESS TO THE APP TO NOTIFY THE GUI WHEN DATA CHANGES
     TAManagerApp app;
@@ -50,8 +50,11 @@ public class TAData implements AppDataComponent {
     int endHour;
     
     // DEFAULT VALUES FOR START AND END HOURS IN MILITARY HOURS
-    public static final int MIN_START_HOUR = 9;
-    public static final int MAX_END_HOUR = 20;
+    public static final int MIN_START_HOUR = 0;
+    public static final int MAX_END_HOUR = 23;
+    
+    //CHECK IF THE DATA IS LOADED
+    public boolean isLoaded = false;
 
     /**
      * This constructor will setup the required data structures for
@@ -95,6 +98,13 @@ public class TAData implements AppDataComponent {
         officeHours.clear();
     }
     
+    public void resetTime(){
+        startHour = MIN_START_HOUR;
+        endHour = MAX_END_HOUR;
+        teachingAssistants.clear();
+        //officeHours.clear();
+    }
+    
     // ACCESSOR METHODS
 
     public int getStartHour() {
@@ -108,11 +118,6 @@ public class TAData implements AppDataComponent {
     public ObservableList<String> getOptions(){
         //ObservableList<String> options = new ObservableList<String>();
         ObservableList<String> options = FXCollections.observableArrayList();
-        /*return  FXCollections.observableArrayList(
-        "Option 1",
-        "Option 2",
-        "Option 3"
-    );*/
         options.add("12:00 am");
         int hour=1;
         String minutesText = "00";
@@ -227,7 +232,7 @@ public class TAData implements AppDataComponent {
         endHour = initEndHour;
         
         // EMPTY THE CURRENT OFFICE HOURS VALUES
-        officeHours.clear();
+        //officeHours.clear();
             
         // WE'LL BUILD THE USER INTERFACE COMPONENT FOR THE
         // OFFICE HOURS GRID AND FEED THEM TO OUR DATA
@@ -315,6 +320,16 @@ public class TAData implements AppDataComponent {
             teachingAssistants.remove(ta);
             teachingAssistants.add(newTA);
             replaceFromEverywhere(initName, newName);
+        }
+        // SORT THE TAS
+        Collections.sort(teachingAssistants);
+            System.out.println(teachingAssistants);
+    }
+    public void tempRemoveTA(String initName, String initEmail){
+        // Delete THE TA along with email
+        TeachingAssistant ta = new TeachingAssistant(initName.trim(), initEmail.trim());
+        if (containsTA(ta)) {
+            teachingAssistants.remove(ta);
         }
         // SORT THE TAS
         Collections.sort(teachingAssistants);
@@ -522,4 +537,45 @@ public class TAData implements AppDataComponent {
             }
         }
     }
+    
+    /*
+     public void reloadData()
+    {
+        TAWorkspace workspaceComponent = (TAWorkspace)app.getWorkspaceComponent();
+        //TAStyle styleComponent = (TAStyle)app.getStyleComponent();
+        // COLUMNS from 2 to 6 // ROWS from 1 to 22
+        
+        int row =0; int col = 2;
+        //String arr[] = cellKey.split("_");
+        int col1 = Integer.parseInt(arr[0]);
+        int row1 = Integer.parseInt(arr[1]);
+        if (flag ==  true)
+        {
+            
+            //workspaceComponent.getOfficeHoursGridPane(getCellKey(col1,0)).getStyleClass().add("-fx-border-color: #fcffc4;");
+            for (row=1; row< row1; row++ )
+            {
+                workspaceComponent.getTACellPane(getCellKey(col1,row)).getStyleClass().add(Hover(flag));
+            }
+
+            for (col=2;col< col1 ; col++)
+            {
+                workspaceComponent.getTACellPane(getCellKey(col,row1)).getStyleClass().add(Hover(flag));
+            }
+        }
+        else
+        {
+            for (row=1; row< row1; row++ )
+            {
+                workspaceComponent.getTACellPane(getCellKey(col1,row)).getStyleClass().remove(Hover(true));
+            }
+
+            //workspaceComponent.getTACellPane(getCellKey(0,row1)).getStyleClass().remove("-fx-border-color: #fcffc4;");
+            //workspaceComponent.getTACellPane(getCellKey(1,row1)).getStyleClass().remove("-fx-border-color: #fcffc4;");
+            for (col=2;col< col1 ; col++)
+            {
+                workspaceComponent.getTACellPane(getCellKey(col,row1)).getStyleClass().remove(Hover(true));
+            }
+        }
+    }*/
 }

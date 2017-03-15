@@ -88,6 +88,9 @@
         <property name="INVALID_TA_EMAIL_MESSAGE"       value="You must provide a valid TA Email"></property>
         <property name="TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE"     value="TA Name and Email Not Unique"></property>
         <property name="TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE"   value="You must provide a unique TA Name and Email"></property>
+        <property name="INVALID_UPDATE_TIME_TITLE"         value="Invalid Start and End Time"></property>
+        <property name="INVALID_UPDATE_TIME_MESSAGE"       value="You must provide a valid start and end time"></property>
+        
     </property_list>
     <property_options_list>
         <property_options name="OFFICE_HOURS_TABLE_HEADERS">

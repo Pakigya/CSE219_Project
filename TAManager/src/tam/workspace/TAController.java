@@ -6,11 +6,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import tam.transaction.jTPS;
 import properties_manager.PropertiesManager;
 import tam.TAManagerApp;
 import tam.TAManagerProp;
 import tam.data.TAData;
 import tam.data.TeachingAssistant;
+import tam.transaction.saveDataTransaction;
 import tam.validators.EmailValidator;
 
 /**
@@ -26,6 +28,8 @@ public class TAController {
     // THE APP PROVIDES ACCESS TO OTHER COMPONENTS AS NEEDED
     TAManagerApp app;
 
+    // HERE WE KEEP TRACK OF TRANSACTIONS USING THE TRANSACTION PROCESSING SYSTEM 
+    static jTPS jtps = new jTPS();
     /**
      * Constructor, note that the app must already be constructed.
      */
@@ -106,6 +110,7 @@ public class TAController {
             clearUpdate();
             workspace.getAddButton().setDisable(true);
             updateToolBar(true);
+            handleAddTransaction();
         }
     }
     
@@ -170,6 +175,7 @@ public class TAController {
                 clearUpdate();
                 workspace.getAddButton().setDisable(true);
                 updateToolBar(true);
+                handleAddTransaction();
             }
         }
     }
@@ -198,6 +204,30 @@ public class TAController {
         addButton.setText(props.getProperty(TAManagerProp.ADD_BUTTON_TEXT.toString()));
         // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
         nameTextField.requestFocus();
+        workspace.getAddButton().setDisable(true);
+        updateToolBar(true);
+    }
+    
+    public void clearSelection(){
+        // WE'LL NEED THIS TO GET LANGUAGE PROPERTIES FOR OUR UI
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        // WE'LL NEED THE WORKSPACE TO RETRIEVE THE USER INPUT VALUES
+        TAWorkspace workspace = (TAWorkspace)app.getWorkspaceComponent();
+        
+        TableView taTable = workspace.getTATable();
+        TextField nameTextField = workspace.getNameTextField();
+        TextField emailTextField = workspace.getEmailTextField();
+        Button addButton = workspace.getAddButton();
+
+        // CLEAR THE TEXT FIELDS
+        nameTextField.setText("");
+        emailTextField.setText("");
+        taTable.getSelectionModel().clearSelection();
+        
+        addButton.setText(props.getProperty(TAManagerProp.ADD_BUTTON_TEXT.toString()));
+        // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
+        //nameTextField.requestFocus();
         workspace.getAddButton().setDisable(true);
         updateToolBar(true);
     }
@@ -239,6 +269,11 @@ public class TAController {
         String taEmail = ta.getEmail();
         data.deleteTA(taName, taEmail);
         updateToolBar(true);
+        if (data.getTeachingAssistants().size() ==0)
+        {
+            clearSelection();
+        }
+        handleAddTransaction();
     }
     
     /**
@@ -246,11 +281,19 @@ public class TAController {
      * 
      */
     public void handleShowUpdateTA() {
+        // WE'LL NEED THIS IN CASE WE NEED TO DISPLAY ANY ERROR MESSAGES
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
         // GET THE TABLE
         TAWorkspace workspace = (TAWorkspace)app.getWorkspaceComponent();
         TableView taTable = workspace.getTATable();
         TextField nameTextField = workspace.getNameTextField();
         TextField emailTextField = workspace.getEmailTextField();
+        Button addButton = workspace.getAddButton();
+        
+        
+        // WE'LL NEED TO ASK THE DATA SOME QUESTIONS TOO
+        TAData data = (TAData)app.getDataComponent();
         
         // IS A TA SELECTED IN THE TABLE?
         Object selectedItem = taTable.getSelectionModel().getSelectedItem();
@@ -259,10 +302,23 @@ public class TAController {
         TeachingAssistant ta = (TeachingAssistant)selectedItem;
         String taName = ta.getName();
         String taEmail = ta.getEmail();
-        
-        nameTextField.setText(taName);
-        emailTextField.setText(taEmail);
-        changeToUpdate();
+        //if (selectedItem != null){
+        if (data.getTeachingAssistants().size() !=0)
+        {
+            nameTextField.setText(taName);
+            emailTextField.setText(taEmail);
+            changeToUpdate();
+        }
+        else
+        {
+            //clearSelection();
+            nameTextField.setText("");
+            emailTextField.setText("");
+            taTable.getSelectionModel().clearSelection();
+
+            addButton.setText(props.getProperty(TAManagerProp.ADD_BUTTON_TEXT.toString()));
+            //Object selectedItem = taTable.getSelectionModel().getSelectedItem();
+        }
     }
     
     /**
@@ -288,6 +344,7 @@ public class TAController {
         // AND TOGGLE THE OFFICE HOURS IN THE CLICKED CELL
         data.toggleTAOfficeHours(cellKey, taName);
         updateToolBar(true);
+        handleAddTransaction();
     }
     
     public void handleCellHover(Pane pane, boolean flag){
@@ -297,6 +354,57 @@ public class TAController {
         data.highlightDuringHover(cellKey, flag);
     }
     
+    public void handleUpdateTimeGrid(){
+        // GET THE WORKSPACE
+        TAWorkspace workspace = (TAWorkspace)app.getWorkspaceComponent();
+        TAData data = (TAData)app.getDataComponent();
+        // WE'LL NEED THIS IN CASE WE NEED TO DISPLAY ANY ERROR MESSAGES
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        int startTime = workspace.getUpdateStartTimeComboBox().getSelectionModel().getSelectedIndex();
+        int endTime = workspace.getUpdateEndTimeComboBox().getSelectionModel().getSelectedIndex();
+        
+        // DID THE USER HAVE AN END TIME BEFORE START TIME?
+        if (startTime>= endTime) {
+	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(INVALID_UPDATE_TIME_TITLE), props.getProperty(INVALID_UPDATE_TIME_MESSAGE));  
+        }
+        // EVERYTHING IS FINE, UPDATE TIME and GRID
+        else if (startTime>data.getStartHour() || endTime<data.getEndHour()){
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(INVALID_UPDATE_TIME_TITLE), props.getProperty(INVALID_UPDATE_TIME_MESSAGE));  
+        }   
+        else{
+            data.initHours(startTime+"", endTime+"");
+            /*
+            clearUpdate();
+            workspace.getAddButton().setDisable(true);
+            */
+            updateToolBar(true);
+            handleAddTransaction();
+        }
+    }
+    
+    public void handleAddTransaction()
+    {
+        saveDataTransaction transaction = new saveDataTransaction(app);
+        jtps.addTransaction(transaction);
+        handleShowUpdateTA();
+        //clearSelection();
+        //clearUpdate();
+    }
+    
+    public void handleDoTransaction()
+    {
+        jtps.doTransaction();
+        clearSelection();
+    }
+    
+    public void handleUndoTransaction()
+    {
+        jtps.undoTransaction();
+        clearSelection();
+    }
     void updateToolBar(boolean IsChangeMade)
     {
         app.getGUI().getFileController().markFileAsNotSaved();
