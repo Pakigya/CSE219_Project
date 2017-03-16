@@ -130,6 +130,10 @@ public class AppGUI {
         // ARE NEVER DISABLED SO WE NEVER HAVE TO TOUCH THEM
     }
 
+    public void updateToolbarLoaded(boolean loaded){
+        saveAsButton.setDisable(loaded);
+        exportButton.setDisable(loaded);
+    }
     /****************************************************************************/
     /* BELOW ARE ALL THE PRIVATE HELPER METHODS WE USE FOR INITIALIZING OUR AppGUI */
     /****************************************************************************/
@@ -146,8 +150,8 @@ public class AppGUI {
         newButton = initChildButton(fileToolbarPane,	NEW_ICON.toString(),	    NEW_TOOLTIP.toString(),	false);
         loadButton = initChildButton(fileToolbarPane,	LOAD_ICON.toString(),	    LOAD_TOOLTIP.toString(),	false);
         saveButton = initChildButton(fileToolbarPane,	SAVE_ICON.toString(),	    SAVE_TOOLTIP.toString(),	true);
-        saveAsButton = initChildButton(fileToolbarPane,	SAVE_AS_ICON.toString(),    SAVE_AS_TOOLTIP.toString(),	false);
-        exportButton = initChildButton(fileToolbarPane,	EXPORT_ICON.toString(),	    EXPORT_TOOLTIP.toString(),	false);
+        saveAsButton = initChildButton(fileToolbarPane,	SAVE_AS_ICON.toString(),    SAVE_AS_TOOLTIP.toString(),	true);
+        exportButton = initChildButton(fileToolbarPane,	EXPORT_ICON.toString(),	    EXPORT_TOOLTIP.toString(),	true);
         exitButton = initChildButton(fileToolbarPane,	EXIT_ICON.toString(),	    EXIT_TOOLTIP.toString(),	false);
 
 	// AND NOW SETUP THEIR EVENT HANDLERS
@@ -160,6 +164,12 @@ public class AppGUI {
         });
         saveButton.setOnAction(e -> {
             fileController.handleSaveRequest();
+        });
+        saveAsButton.setOnAction(e -> {
+            fileController.handleSaveAsRequest();
+        });
+        exportButton.setOnAction(e -> {
+            fileController.handleExportRequest();
         });
         exitButton.setOnAction(e -> {
             fileController.handleExitRequest();
@@ -245,6 +255,8 @@ public class AppGUI {
 	newButton.getStyleClass().add(CLASS_FILE_BUTTON);
 	loadButton.getStyleClass().add(CLASS_FILE_BUTTON);
 	saveButton.getStyleClass().add(CLASS_FILE_BUTTON);
+	saveAsButton.getStyleClass().add(CLASS_FILE_BUTTON);
+	exportButton.getStyleClass().add(CLASS_FILE_BUTTON);
 	exitButton.getStyleClass().add(CLASS_FILE_BUTTON);
     }
         /**

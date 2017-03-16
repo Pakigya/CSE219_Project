@@ -23,6 +23,7 @@ public class AppStartupConstants
     public static final String PATH_WORK = "./work/";
     public static final String PATH_IMAGES = "./images/";
     public static final String PATH_EMPTY = ".";
+    public static final String PATH_TO_HTML = "../TAManagerTester/public_html/";
   
     // ERROR MESSAGE ASSOCIATED WITH PROPERTIES FILE LOADING ERRORS.
     // NOTE THAT THE REASON WE CAN'T LOAD THIS FROM THE XML FILE IS

@@ -10,6 +10,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import properties_manager.PropertiesManager;
 import djf.AppTemplate;
+import static djf.settings.AppPropertyType.EXPORT_COMPLETED_TITLE;
+import static djf.settings.AppPropertyType.EXPORT_COMPLETED_MESSAGE;
+import static djf.settings.AppPropertyType.EXPORT_WORK_TITLE;
 import static djf.settings.AppPropertyType.LOAD_ERROR_MESSAGE;
 import static djf.settings.AppPropertyType.LOAD_ERROR_TITLE;
 import static djf.settings.AppPropertyType.LOAD_WORK_TITLE;
@@ -26,7 +29,13 @@ import static djf.settings.AppPropertyType.SAVE_ERROR_TITLE;
 import static djf.settings.AppPropertyType.SAVE_UNSAVED_WORK_MESSAGE;
 import static djf.settings.AppPropertyType.SAVE_UNSAVED_WORK_TITLE;
 import static djf.settings.AppPropertyType.SAVE_WORK_TITLE;
+import static djf.settings.AppStartupConstants.PATH_TO_HTML;
 import static djf.settings.AppStartupConstants.PATH_WORK;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import javafx.stage.DirectoryChooser;
+
+import org.apache.commons.io.FileUtils;
 
 /**
  * This class provides the event programmed responses for the file controls
@@ -109,6 +118,7 @@ public class AppFileController {
                 // REFRESH THE GUI, WHICH WILL ENABLE AND DISABLE
                 // THE APPROPRIATE CONTROLS
                 app.getGUI().updateToolbarControls(saved);
+                app.getGUI().updateToolbarLoaded(false);
 
                 // TELL THE USER NEW WORK IS UNDERWAY
 		dialog.show(props.getProperty(NEW_COMPLETED_TITLE), props.getProperty(NEW_COMPLETED_MESSAGE));
@@ -181,6 +191,34 @@ public class AppFileController {
 	    dialog.show(props.getProperty(LOAD_ERROR_TITLE), props.getProperty(LOAD_ERROR_MESSAGE));
         }
     }
+    /**
+     * This method will save the current course to a file. Note that we already
+     * know the name of the file, so we won't need to prompt the user.
+     * 
+     * 
+     * @param courseToSave The course being edited that is to be saved to a file.
+     */
+    public void handleSaveAsRequest() {
+	// WE'LL NEED THIS TO GET CUSTOM STUFF
+	PropertiesManager props = PropertiesManager.getPropertiesManager();
+        try {
+	    // WE NEED TO PROMPT THE USER
+		// PROMPT THE USER FOR A FILE NAME
+		FileChooser fc = new FileChooser();
+		fc.setInitialDirectory(new File(PATH_WORK));
+		fc.setTitle(props.getProperty(SAVE_WORK_TITLE));
+		fc.getExtensionFilters().addAll(
+		new ExtensionFilter(props.getProperty(WORK_FILE_EXT_DESC), props.getProperty(WORK_FILE_EXT)));
+
+		File selectedFile = fc.showSaveDialog(app.getGUI().getWindow());
+		if (selectedFile != null) {
+		    saveWork(selectedFile);
+		}
+        } catch (IOException ioe) {
+	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(LOAD_ERROR_TITLE), props.getProperty(LOAD_ERROR_MESSAGE));
+        }
+    }
     
     // HELPER METHOD FOR SAVING WORK
     private void saveWork(File selectedFile) throws IOException {
@@ -199,6 +237,65 @@ public class AppFileController {
 	// AND REFRESH THE GUI, WHICH WILL ENABLE AND DISABLE
 	// THE APPROPRIATE CONTROLS
 	app.getGUI().updateToolbarControls(saved);	
+    }
+    
+    /**
+     * This method will exit the application, making sure the user doesn't lose
+     * any data first.
+     * 
+     */
+    public void handleExportRequest() {
+	// WE'LL NEED THIS TO GET CUSTOM STUFF
+	PropertiesManager props = PropertiesManager.getPropertiesManager();
+        try {
+	    // WE NEED TO PROMPT THE USER
+		// PROMPT THE USER FOR A FILE NAME
+                DirectoryChooser dc = new DirectoryChooser();
+		//FileChooser fc = new FileChooser();
+		dc.setInitialDirectory(new File(PATH_TO_HTML));
+		dc.setTitle(props.getProperty(EXPORT_WORK_TITLE));
+		//fc.getExtensionFilters().addAll(
+		//new ExtensionFilter(props.getProperty(WORK_FILE_EXT_DESC), props.getProperty(WORK_FILE_EXT)));
+
+		//File selectedFile = dc.showSaveDialog(app.getGUI().getWindow());
+		File selectedFile = dc.showDialog(app.getGUI().getWindow());
+		if (selectedFile != null) {
+		    exportWork(selectedFile);
+		}
+        } catch (IOException ioe) {
+	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(LOAD_ERROR_TITLE), props.getProperty(LOAD_ERROR_MESSAGE));
+        }
+    }
+    
+    // HELPER METHOD FOR EXPORTING WORK
+    private void exportWork(File selectedFile) throws IOException {
+	// SAVE IT TO A DIRECTORY
+  
+        //EXAMPLEcopyDirectory(File srcDir, File destDir) 
+        File prevFile = new File(PATH_TO_HTML);
+        System.out.print("WELL IS THIS ENOUGH?");
+        FileUtils.copyDirectory(prevFile, selectedFile);
+        
+        File replacementFile = new File(selectedFile.toString()+"/js/OfficeHoursGridData.json");
+        FileUtils.forceDelete(replacementFile);
+	InputStream is = new ByteArrayInputStream(app.getFileComponent().saveJsonData(app.getDataComponent()).toString().getBytes());
+        FileUtils.copyToFile(is, replacementFile);
+    //FileUtils.copyFile(prevFile, replacementFile);
+        
+        System.out.print("DID IT COPY?");
+        //FileUtils.copyDirectory(new File(PATH_TO_HTML), selectedFile);
+	//app.getFileComponent().saveData(app.getDataComponent(), selectedFile.getPath());
+		
+	// TELL THE USER THE FILE HAS BEEN SAVED
+	AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	PropertiesManager props = PropertiesManager.getPropertiesManager();
+        dialog.show(props.getProperty(EXPORT_COMPLETED_TITLE),props.getProperty(EXPORT_COMPLETED_MESSAGE));
+	//dialog.show(props.getProperty(EXPORT_COMPLETED_TITLE),props.getProperty(EXPORT_COMPLETED_MESSAGE));
+		    
+	// AND REFRESH THE GUI, WHICH WILL ENABLE AND DISABLE
+	// THE APPROPRIATE CONTROLS
+	//app.getGUI().updateToolbarControls(saved);	
     }
     
     /**
@@ -324,6 +421,7 @@ public class AppFileController {
                 // AND MAKE SURE THE FILE BUTTONS ARE PROPERLY ENABLED
                 saved = true;
                 app.getGUI().updateToolbarControls(saved);
+                app.getGUI().updateToolbarLoaded(false);
             } catch (Exception e) {
                 AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
                 dialog.show(props.getProperty(LOAD_ERROR_TITLE), props.getProperty(LOAD_ERROR_MESSAGE));

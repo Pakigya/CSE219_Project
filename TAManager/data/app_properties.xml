@@ -50,6 +50,8 @@
         <property name="LOAD_COMPLETED_TITLE"		value="Loading Completed"></property>
         <property name="SAVE_COMPLETED_MESSAGE"		value="File Saving Completed"></property>
         <property name="SAVE_COMPLETED_TITLE"		value="Saving Completed"></property>
+        <property name="EXPORT_COMPLETED_MESSAGE"       value="Directoy Exporting Completed"></property>
+        <property name="EXPORT_COMPLETED_TITLE"		value="Exporting Completed"></property>
         <property name="SAVE_UNSAVED_WORK_MESSAGE"	value="Would you like to save your unsaved work first?"></property>
         <property name="SAVE_UNSAVED_WORK_TITLE"	value="Save unsaved work?"></property>
 	<property name="UPDATE_TIME_MESSAGE"            value="Would you like to update the time even when it deletes some data?"></property>
@@ -58,8 +60,11 @@
         <property name="NEW_CREATED_MESSAGE"		value="New Work Created but not yet Saved"></property>
         <property name="WORK_LOADED_MESSAGE"		value="The Work has been Loaded"></property>
         <property name="WORK_SAVED_MESSAGE"		value="The Work has been Saved"></property>
+        <property name="WORK_EXPORTED_MESSAGE"		value="The Work has been Exported"></property>
         <property name="SAVE_UNSAVED_WORK_MESSAGE"	value="Do you want to save your unsaved work first?"></property>
 	<property name="SAVE_WORK_TITLE"		value="Save your work"></property>
+	<property name="SAVE_AS_WORK_TITLE"		value="Save As your work"></property>
+	<property name="EXPORT_WORK_TITLE"		value="Export your work"></property>
 	<property name="LOAD_WORK_TITLE"		value="Select work file to load"></property>
 	<property name="WORK_FILE_EXT"			value=".json"></property>
 	<property name="WORK_FILE_EXT_DESC"		value="TA Office Hours"></property>
