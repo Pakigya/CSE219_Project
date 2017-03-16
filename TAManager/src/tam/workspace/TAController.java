@@ -2,18 +2,12 @@ package tam.workspace;
 
 import static tam.TAManagerProp.*;
 import djf.ui.AppMessageDialogSingleton;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonReader;
 import tam.transaction.jTPS;
 import properties_manager.PropertiesManager;
 import tam.TAManagerApp;
@@ -38,6 +32,10 @@ public class TAController {
 
     // HERE WE KEEP TRACK OF TRANSACTIONS USING THE TRANSACTION PROCESSING SYSTEM 
     static jTPS jtps = new jTPS();
+    
+    public static jTPS getJTPS(){
+        return jtps;
+    } 
     /**
      * Constructor, note that the app must already be constructed.
      */
@@ -396,7 +394,7 @@ public class TAController {
             // RESET THE DATA
                 //app.getDataComponent().resetData();
             
-                data.initHours(startTime+"", endTime+"");
+            data.initHours(startTime+"", endTime+"");
             
             // LOAD THE FILE INTO THE DATA
                  app.getFileComponent().loadJsonData(data,json);

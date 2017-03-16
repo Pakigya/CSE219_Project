@@ -24,6 +24,7 @@ import javax.json.stream.JsonGenerator;
 import tam.TAManagerApp;
 import tam.data.TAData;
 import tam.data.TeachingAssistant;
+import tam.workspace.TAController;
 
 /**
  * This class serves as the file component for the TA
@@ -88,6 +89,7 @@ public class TAFiles implements AppFileComponent {
         }
         
         dataManager.isLoaded = true;
+        TAController.getJTPS().clearTransaction();
     }
     /**
      * This method helps us to load the passed json data into the parent TA data

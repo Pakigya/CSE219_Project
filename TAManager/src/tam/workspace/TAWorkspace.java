@@ -300,8 +300,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
        
        // FOR UPDATING TA OFFICE HOUR GRID USING COMBOBOX
        updateTimeButton.setOnAction(e -> {
-           
-           System.out.println("khoi k bhayo to json");
+           //updateInitialTransaction();
            controller.handleUpdateTimeGrid();
        });
        
